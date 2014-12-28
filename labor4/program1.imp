@@ -1,0 +1,15 @@
+DECLARE
+    a b
+IN
+    GET a;
+    GET b;
+    WHILE a DIFF b DO
+        IF a LE b THEN (* a <-> b *)
+            a ASSIGN a PLUS b;
+            b ASSIGN a MINUS b;
+            a ASSIGN a MINUS b;
+        ENDIF
+        a ASSIGN a MINUS b;
+    ENDWHILE
+    PUT a;
+END
