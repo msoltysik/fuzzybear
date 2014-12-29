@@ -1,25 +1,29 @@
 %option noyywrap
 
 %{
+	#include <stdlib.h>
 	#include "parser.tab.h"
 	int yylex();
 %}
 
 %x IN_COMMENT
 
-num [0-9]+
-identifier [_a-z]+
+num			[0-9]+
+identifier 	[_a-z]+
 
 %%
 
 <IN_COMMENT>"*)"	BEGIN(INITIAL);
-<IN_COMMENT>.*	;
+<IN_COMMENT>.*		;
 
 
 "(*"		BEGIN(IN_COMMENT);
 [ \t\r\n]+	;
 
-/* Commands */
+"DECLARE"	return DECLARE;
+"IN"		return IN;
+"END"		return END;
+
 "ASSIGN"	return ASSIGN;
 "IF"		return IF;
 "THEN"		return THEN;
@@ -31,14 +35,12 @@ identifier [_a-z]+
 "GET"		return GET;
 "PUT"		return PUT;
 
-/* Expressions */
 "PLUS"		return PLUS;
 "MINUS"		return MINUS;
-"TIMES"		return MUL;
+"TIMES"		return TIMES;
 "DIV"		return DIV;
 "MOD"		return MOD;
 
-/* Conditions */
 "EQ"		return EQ;
 "DIFF"		return DIFF;
 "LE"		return LE;
@@ -46,11 +48,15 @@ identifier [_a-z]+
 "LEQ"		return LEQ;
 "GEQ"		return GEQ;
 
-/* Values */
-num			return NUM;
-identifier	return IDENTIFIER;
+num			{
+				yylval.num = (char *) strdup(yytext);
+				return num;
+			}
+identifier	{
+				yylval.identifier = (char *) strdup(yytext);
+			}	return identifier;
 
-
-
+";"			return SEM;
+.			;
 
 %%

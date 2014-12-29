@@ -1,157 +1,100 @@
 %{
-	#define YYSTYPE int
 	#include <stdio.h>
-	#include <math.h>
-	#include <string.h>
-	#include <stdbool.h>
-
-	int num_top = 0;
-	int num_stack[2]; // unary and binary operations 
-	char result[2048];
-	bool error = false;
-
+	void yyerror(char *errorinfo);
 	int yylex(void);
-	int yyerror(char *s);
-	// extern yyyin;
-	int calculator(int a, int b, char operator);
-	int push(int number);
-	void clean();
 %}
 
-%token NUMBER LBRACE RBRACE EOL ERROR
+%union {
+	char *num;
+	char *identifier;
+}
 
-%left PLUS MINUS 
-%left MUL DIV MOD
-%right NEG
-%right POW
+%token DECLARE;
+%token IN;
+%token END;
+
+%token ASSIGN;
+%token IF;
+%token THEN;
+%token ENDIF;
+%token ELSE;
+%token WHILE;
+%token DO;
+%token ENDWHILE;
+%token GET;
+%token PUT;
+
+%token PLUS;
+%token MINUS;
+%token TIMES;
+%token DIV;
+%token MOD;
+
+%token EQ;
+%token DIFF;
+%token LE;
+%token GE;
+%token LEQ;
+%token GEQ;
+
+%token num;
+%token identifier;
+
+%token SEM;
 
 %%
-
-input:
-	%empty
-	| input line
+program:
+DECLARE vdeclarations IN commands END {printf("Dupa0.0\n");}
 ;
 
-line:
-	EOL
-	| exp EOL  {
-		if(!error) {
-			printf("%s\n", result);
-			printf ("Wynik: %d\n", $1);
-		} else {
-			printf("undefined\n");
-		}
-		clean();
-	}
-	| error EOL	{
-		printf("Błąd.\n");
-	}
+vdeclarations:
+vdeclarations identifier  {printf("Dupa1.1\n");}
+| {printf("Dupa1.2\n");}
 ;
 
-exp:
-	NUMBER					{ $$ = push($1); }
-	| exp PLUS exp			{ $$ = calculator($1, $3, '+'); }
-	| exp MINUS exp			{ $$ = calculator($1, $3, '-'); }
-	| exp MUL exp			{ $$ = calculator($1, $3, '*'); }
-	| exp MOD exp			{
-								if ($3 == 0) {
-									error = true;
-								} else {
-									$$ = calculator($1, $3, '%');
-								}
-							}
-	| exp DIV exp			{
-								if ($3 == 0) {
-									error = true;
-								} else {
-									$$ = calculator($1, $3, '/');
-								}
-							}
-	| MINUS exp %prec NEG	{ $$ = push(-$2); }
-	| exp POW exp			{ $$ = calculator($1, $3, '^'); } 
-	| LBRACE exp RBRACE		{ $$ = $2; }
+commands:
+commands command
+|
 ;
 
+command:
+identifier ASSIGN expression;
+| IF condition THEN commands ENDIF
+| IF condition THEN commands ELSE commands ENDIF
+| WHILE condition DO commands ENDWHILE
+| GET identifier SEM
+| PUT value SEM
+;
+
+expression:
+value
+| value PLUS value
+| value MINUS value
+| value TIMES value
+| value DIV value
+| value MOD value
+;
+
+condition:
+value EQ value
+| value DIFF value
+| value LE value
+| value GE value
+| value LEQ value
+| value GEQ value
+;
+
+value:
+num
+| identifier
+;
 %%
 
-int yyerror(char *s) {
-	clean();
+void yyerror(char *errorinfo) {
+	printf("%s\n", errorinfo);
 }
-
-int push(int number) {
-	if (number < 0) {
-			num_stack[num_top] = number;
-		} else {
-			num_stack[++num_top] = number;
-		}
-	return number;
-}
-
-void num_print() {
-	char str[128];
-
-	for (int i = 1; i <= num_top; i++){
-		sprintf(str, "%d ", num_stack[i]);
-		strcat(result, str);
-	}
-
-	num_top = 0;
-}
-
-int calculator(int a, int b, char operator) {
-	char str[16];
-	num_print();
-	
-	switch(operator) {
-		case '+':
-			sprintf(str, "+ ");
-			strcat(result, str);
-			return a + b;
-			break;
-
-		case '-': 
-			sprintf(str, "- ");
-			strcat(result, str);
-			return a - b;
-			break;
-
-		case '*':
-			sprintf(str, "* ");
-			strcat(result, str);
-			return a * b;
-			break;
-
-		case '/':
-			sprintf(str, "/ ");
-			strcat(result, str);
-			return a / b;
-			break;
-
-		case '%':
-			sprintf(str, "%% ");
-			strcat(result, str);
-			return a % b;
-			break;
-
-		case '^':
-			sprintf(str, "^ ");
-			strcat(result, str);
-			return (int) pow(a, b);
-			break;
-	}
-	return 0;
-}
-
-
-void clean() {
-	memset(&result[0], '\0', sizeof(result));
-	error = false;
-	num_top = 0;
-}
-
 
 int main(int argc, char **argv) {
 	yyparse();
-	printf("Bye.\n");
 	return 0;
 }
