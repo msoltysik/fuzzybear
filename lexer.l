@@ -1,4 +1,5 @@
 %option noyywrap
+%option yylineno
 
 %{
 	#include <stdlib.h>
@@ -8,14 +9,11 @@
 
 %x IN_COMMENT
 
-num			[0-9]+
-identifier 	[_a-z]+
-
 %%
 
 <IN_COMMENT>"*)"	BEGIN(INITIAL);
-<IN_COMMENT>.*		;
-
+<IN_COMMENT>.		;
+<IN_COMMENT>"\n"		;
 
 "(*"		BEGIN(IN_COMMENT);
 [ \t\r\n]+	;
@@ -48,15 +46,27 @@ identifier 	[_a-z]+
 "LEQ"		return LEQ;
 "GEQ"		return GEQ;
 
-num			{
-				yylval.num = (char *) strdup(yytext);
-				return num;
-			}
-identifier	{
-				yylval.identifier = (char *) strdup(yytext);
-			}	return identifier;
-
+[_a-z]+		{
+				yylval.identifier = (char *)strdup(yytext);
+             	return(identifier); 
+            }
+[0-9]+		{
+				yylval.num = (char *)strdup(yytext);
+             	return(num);
+            }
 ";"			return SEM;
 .			;
 
 %%
+
+
+/*
+YYSTYPE yylval;
+int main(void)
+{
+    int token;
+    while ((token = yylex()) != 0)
+        printf("Token: %d (%s)\n", token, yytext);
+    return 0;
+}
+*/

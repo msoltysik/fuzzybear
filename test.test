@@ -1,0 +1,6 @@
+DECLARE
+  a
+IN
+  GET a;
+  PUT a;
+END
