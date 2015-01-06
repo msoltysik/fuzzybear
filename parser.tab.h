@@ -80,7 +80,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 16 "parser.y" /* yacc.c:1915  */
+#line 14 "src/parser.y" /* yacc.c:1915  */
 
 	char *num;
 	char *identifier;

@@ -62,23 +62,20 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 1 "parser.y" /* yacc.c:339  */
+#line 1 "src/parser.y" /* yacc.c:339  */
 
 	#include <stdio.h>
 	void yyerror(char *errorinfo);
 	int yylex(void);
 	int yylineno;
+	extern FILE *yyin;
+	extern FILE *yyout;
+	int dbg = 1;
 
-	void DBG(int linenumber, char* keyword) {
-		printf("[%d]: <%s>\n", linenumber, keyword);
-	}
+	void DBG(int linenumber, char* keyword);
+	void DBGwithValue(int linenumber, char* keyword, char* value);
 
-	void DBGwithValue(int linenumber, char* keyword, char* value) {
-		printf("[%d]: <%s>: %s\n", linenumber, keyword, value);
-	}
-
-
-#line 82 "parser.tab.c" /* yacc.c:339  */
+#line 79 "parser.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -148,12 +145,12 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 16 "parser.y" /* yacc.c:355  */
+#line 14 "src/parser.y" /* yacc.c:355  */
 
 	char *num;
 	char *identifier;
 
-#line 157 "parser.tab.c" /* yacc.c:355  */
+#line 154 "parser.tab.c" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -168,7 +165,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 172 "parser.tab.c" /* yacc.c:358  */
+#line 169 "parser.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -417,7 +414,7 @@ union yyalloc
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  8
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  27
+#define YYNRULES  26
 /* YYNSTATES -- Number of states.  */
 #define YYNSTATES  59
 
@@ -468,9 +465,9 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    55,    55,    56,    62,    67,    72,    77,    80,    84,
-      88,    92,    96,   100,   105,   106,   107,   108,   109,   110,
-     112,   113,   114,   115,   116,   117,   119,   120
+       0,    53,    53,    59,    64,    69,    70,    73,    77,    81,
+      85,    89,    93,    98,    99,   103,   107,   111,   115,   120,
+     124,   128,   132,   136,   140,   145,   149
 };
 #endif
 
@@ -525,12 +522,12 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       2,     5,     0,     0,     1,     7,     4,     0,     3,     0,
-       0,     0,     0,     0,     6,    26,    27,     0,     0,     0,
-       0,     0,     0,     7,     0,     0,     0,     0,     0,     0,
-       7,    12,    13,     0,    14,     0,    20,    21,    22,    23,
-      24,    25,     0,     8,     0,     0,     0,     0,     0,     9,
-       7,    11,    15,    16,    17,    18,    19,     0,    10
+       0,     4,     0,     0,     1,     6,     3,     0,     2,     0,
+       0,     0,     0,     0,     5,    25,    26,     0,     0,     0,
+       0,     0,     0,     6,     0,     0,     0,     0,     0,     0,
+       6,    11,    12,     0,    13,     0,    19,    20,    21,    22,
+      23,    24,     0,     7,     0,     0,     0,     0,     0,     8,
+       6,    10,    14,    15,    16,    17,    18,     0,     9
 };
 
   /* YYPGOTO[NTERM-NUM].  */
@@ -587,17 +584,17 @@ static const yytype_uint8 yystos[] =
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    30,    31,    31,    32,    32,    33,    33,    34,    34,
-      34,    34,    34,    34,    35,    35,    35,    35,    35,    35,
-      36,    36,    36,    36,    36,    36,    37,    37
+       0,    30,    31,    32,    32,    33,    33,    34,    34,    34,
+      34,    34,    34,    35,    35,    35,    35,    35,    35,    36,
+      36,    36,    36,    36,    36,    37,    37
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     0,     5,     2,     0,     2,     0,     4,     5,
-       7,     5,     3,     3,     1,     3,     3,     3,     3,     3,
-       3,     3,     3,     3,     3,     3,     1,     1
+       0,     2,     5,     2,     0,     2,     0,     4,     5,     7,
+       5,     3,     3,     1,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     3,     3,     1,     1
 };
 
 
@@ -1274,183 +1271,201 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 55 "parser.y" /* yacc.c:1661  */
-    {}
-#line 1280 "parser.tab.c" /* yacc.c:1661  */
+#line 54 "src/parser.y" /* yacc.c:1661  */
+    {
+					DBG(yylineno, "END");
+				}
+#line 1279 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 3:
-#line 57 "parser.y" /* yacc.c:1661  */
+#line 60 "src/parser.y" /* yacc.c:1661  */
     {
-					DBG(yylineno, "End of Program");
+					DBGwithValue(yylineno, "IDENTIFIER", (yyvsp[0].identifier));
 				}
-#line 1288 "parser.tab.c" /* yacc.c:1661  */
+#line 1287 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 4:
-#line 63 "parser.y" /* yacc.c:1661  */
+#line 64 "src/parser.y" /* yacc.c:1661  */
     {
-					DBGwithValue(yylineno, "ID", yylval.identifier);
+					DBG(yylineno, "DECLARE");
 				}
-#line 1296 "parser.tab.c" /* yacc.c:1661  */
+#line 1295 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 5:
-#line 67 "parser.y" /* yacc.c:1661  */
-    {
-					DBG(yylineno, "vdeclarations");
-				}
-#line 1304 "parser.tab.c" /* yacc.c:1661  */
+#line 69 "src/parser.y" /* yacc.c:1661  */
+    {}
+#line 1301 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 6:
-#line 73 "parser.y" /* yacc.c:1661  */
-    {
-					DBG(yylineno, "commands");
-				}
-#line 1312 "parser.tab.c" /* yacc.c:1661  */
+#line 70 "src/parser.y" /* yacc.c:1661  */
+    {}
+#line 1307 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 7:
-#line 77 "parser.y" /* yacc.c:1661  */
-    {}
-#line 1318 "parser.tab.c" /* yacc.c:1661  */
-    break;
-
-  case 8:
-#line 81 "parser.y" /* yacc.c:1661  */
+#line 74 "src/parser.y" /* yacc.c:1661  */
     {
 					DBGwithValue(yylineno, "ASSIGN", yylval.identifier);
 				}
-#line 1326 "parser.tab.c" /* yacc.c:1661  */
+#line 1315 "parser.tab.c" /* yacc.c:1661  */
     break;
 
-  case 9:
-#line 85 "parser.y" /* yacc.c:1661  */
+  case 8:
+#line 78 "src/parser.y" /* yacc.c:1661  */
     {
 					DBG(yylineno, "IF/THEN/ENDIF");
 				}
-#line 1334 "parser.tab.c" /* yacc.c:1661  */
+#line 1323 "parser.tab.c" /* yacc.c:1661  */
     break;
 
-  case 10:
-#line 89 "parser.y" /* yacc.c:1661  */
+  case 9:
+#line 82 "src/parser.y" /* yacc.c:1661  */
     {
 					DBG(yylineno, "IF/THEN/ELSE/ENDIF");
 				}
-#line 1342 "parser.tab.c" /* yacc.c:1661  */
+#line 1331 "parser.tab.c" /* yacc.c:1661  */
     break;
 
-  case 11:
-#line 93 "parser.y" /* yacc.c:1661  */
+  case 10:
+#line 86 "src/parser.y" /* yacc.c:1661  */
     {
 					DBG(yylineno, "WHILE/DO/ENDWHILE");
 				}
-#line 1350 "parser.tab.c" /* yacc.c:1661  */
+#line 1339 "parser.tab.c" /* yacc.c:1661  */
+    break;
+
+  case 11:
+#line 90 "src/parser.y" /* yacc.c:1661  */
+    {
+					DBGwithValue(yylineno, "GET", (yyvsp[-1].identifier));
+				}
+#line 1347 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 12:
-#line 97 "parser.y" /* yacc.c:1661  */
-    {
-					DBGwithValue(yylineno, "GET", yylval.identifier);
-				}
-#line 1358 "parser.tab.c" /* yacc.c:1661  */
-    break;
-
-  case 13:
-#line 101 "parser.y" /* yacc.c:1661  */
+#line 94 "src/parser.y" /* yacc.c:1661  */
     {
 					DBG(yylineno, "PUT");
 				}
-#line 1366 "parser.tab.c" /* yacc.c:1661  */
+#line 1355 "parser.tab.c" /* yacc.c:1661  */
+    break;
+
+  case 13:
+#line 98 "src/parser.y" /* yacc.c:1661  */
+    {}
+#line 1361 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 14:
-#line 105 "parser.y" /* yacc.c:1661  */
-    {}
-#line 1372 "parser.tab.c" /* yacc.c:1661  */
+#line 100 "src/parser.y" /* yacc.c:1661  */
+    {
+					DBG(yylineno, "PLUS");
+				}
+#line 1369 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 15:
-#line 106 "parser.y" /* yacc.c:1661  */
-    {}
-#line 1378 "parser.tab.c" /* yacc.c:1661  */
+#line 104 "src/parser.y" /* yacc.c:1661  */
+    {
+					DBG(yylineno, "MINUS");
+				}
+#line 1377 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 16:
-#line 107 "parser.y" /* yacc.c:1661  */
-    {}
-#line 1384 "parser.tab.c" /* yacc.c:1661  */
+#line 108 "src/parser.y" /* yacc.c:1661  */
+    {
+					DBG(yylineno, "TIMES");
+				}
+#line 1385 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 17:
-#line 108 "parser.y" /* yacc.c:1661  */
-    {}
-#line 1390 "parser.tab.c" /* yacc.c:1661  */
+#line 112 "src/parser.y" /* yacc.c:1661  */
+    {
+					DBG(yylineno, "DIV");
+				}
+#line 1393 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 18:
-#line 109 "parser.y" /* yacc.c:1661  */
-    {}
-#line 1396 "parser.tab.c" /* yacc.c:1661  */
+#line 116 "src/parser.y" /* yacc.c:1661  */
+    {
+					DBG(yylineno, "MOD");
+				}
+#line 1401 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 19:
-#line 110 "parser.y" /* yacc.c:1661  */
-    {}
-#line 1402 "parser.tab.c" /* yacc.c:1661  */
+#line 121 "src/parser.y" /* yacc.c:1661  */
+    {
+					DBG(yylineno, "EQ");
+				}
+#line 1409 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 20:
-#line 112 "parser.y" /* yacc.c:1661  */
-    {}
-#line 1408 "parser.tab.c" /* yacc.c:1661  */
+#line 125 "src/parser.y" /* yacc.c:1661  */
+    {
+					DBG(yylineno, "DIFF");
+				}
+#line 1417 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 21:
-#line 113 "parser.y" /* yacc.c:1661  */
-    {}
-#line 1414 "parser.tab.c" /* yacc.c:1661  */
+#line 129 "src/parser.y" /* yacc.c:1661  */
+    {
+					DBG(yylineno, "LE");
+				}
+#line 1425 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 22:
-#line 114 "parser.y" /* yacc.c:1661  */
-    {}
-#line 1420 "parser.tab.c" /* yacc.c:1661  */
+#line 133 "src/parser.y" /* yacc.c:1661  */
+    {
+					DBG(yylineno, "GE");
+				}
+#line 1433 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 23:
-#line 115 "parser.y" /* yacc.c:1661  */
-    {}
-#line 1426 "parser.tab.c" /* yacc.c:1661  */
+#line 137 "src/parser.y" /* yacc.c:1661  */
+    {
+					DBG(yylineno, "LEQ");
+				}
+#line 1441 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 24:
-#line 116 "parser.y" /* yacc.c:1661  */
-    {}
-#line 1432 "parser.tab.c" /* yacc.c:1661  */
+#line 141 "src/parser.y" /* yacc.c:1661  */
+    {
+					DBG(yylineno, "GEQ");
+				}
+#line 1449 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 25:
-#line 117 "parser.y" /* yacc.c:1661  */
-    {}
-#line 1438 "parser.tab.c" /* yacc.c:1661  */
+#line 146 "src/parser.y" /* yacc.c:1661  */
+    {
+					DBGwithValue(yylineno, "NUM", yylval.num);
+				}
+#line 1457 "parser.tab.c" /* yacc.c:1661  */
     break;
 
   case 26:
-#line 119 "parser.y" /* yacc.c:1661  */
-    {DBGwithValue(yylineno, "NUM", yylval.num);}
-#line 1444 "parser.tab.c" /* yacc.c:1661  */
-    break;
-
-  case 27:
-#line 120 "parser.y" /* yacc.c:1661  */
-    {DBGwithValue(yylineno, "ID", yylval.identifier);}
-#line 1450 "parser.tab.c" /* yacc.c:1661  */
+#line 150 "src/parser.y" /* yacc.c:1661  */
+    {
+					DBGwithValue(yylineno, "IDENTIFIER", yylval.identifier);
+				}
+#line 1465 "parser.tab.c" /* yacc.c:1661  */
     break;
 
 
-#line 1454 "parser.tab.c" /* yacc.c:1661  */
+#line 1469 "parser.tab.c" /* yacc.c:1661  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1678,18 +1693,46 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 122 "parser.y" /* yacc.c:1906  */
+#line 154 "src/parser.y" /* yacc.c:1906  */
 
 
-void yyerror(char *errorinfo) {
-	printf("%s\n", errorinfo);
+void yyerror(char *s)
+{
+      printf("Błąd w linii %d: %s \n", yylineno, s);
 }
 
+void DBG(int linenumber, char* keyword) {
+	if (dbg == 1) {
+		printf("[%d]: <%s>\n", linenumber, keyword);
+	}
+}
 
+void DBGwithValue(int linenumber, char* keyword, char* value) {
+	if (dbg == 1) {
+		printf("[%d]: <%s>: %s\n", linenumber, keyword, value);
+	}
+}
 
 ///*
 int main(int argc, char **argv) {
-	yyparse();
+    ++argv, --argc;  /* skip over program name */
+	printf("Fuzzy Bear CC.\nCopyright (c) 2015.\nMateusz Sołtysik, JFTT @ WPPT.\n\n");
+
+	switch(argc) {
+		case 1:
+				yyin 	= fopen(argv[0], "r");
+				yyparse();
+				break;
+		case 2:
+				yyin 	= fopen(argv[0], "r");
+				yyout 	= freopen(argv[1], "w", stdout);
+				yyparse();
+				fclose(yyout);
+				break;	
+		default:
+				printf("Usage:\n$ ./fuzzybear-cc in.imp (or)\n$ ./fuzzybear-cc in.imp out.mr\n");
+
+	}
 	return 0;
 }
 //*/

@@ -11,12 +11,12 @@
 
 %%
 
+
 <IN_COMMENT>"*)"	BEGIN(INITIAL);
 <IN_COMMENT>.		;
-<IN_COMMENT>"\n"		;
+<IN_COMMENT>"\n"    ;
 
 "(*"		BEGIN(IN_COMMENT);
-[ \t\r\n]+	;
 
 "DECLARE"	return DECLARE;
 "IN"		return IN;
@@ -45,20 +45,24 @@
 "GE"		return GE;
 "LEQ"		return LEQ;
 "GEQ"		return GEQ;
+";"         return SEM;
 
-[_a-z]+		{
-				yylval.identifier = (char *)strdup(yytext);
-             	return(identifier); 
-            }
-[0-9]+		{
-				yylval.num = (char *)strdup(yytext);
-             	return(num);
-            }
-";"			return SEM;
-.			;
+[_a-z]+		   {
+    				yylval.identifier = (char *)strdup(yytext);
+                 	return(identifier); 
+                }
+[0-9]+		    {
+    				yylval.num = (char *)strdup(yytext);
+                 	return(num);
+                }
 
+[ \t\n\r]       /* skip whitespace */
+
+([_a-z]|[0-9])+ {
+                    printf("Błąd w linii %d: nierozpoznany napis %s\n", yylineno, yytext);
+                    exit(-1);
+                }
 %%
-
 
 /*
 YYSTYPE yylval;
