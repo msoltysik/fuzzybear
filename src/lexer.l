@@ -62,6 +62,12 @@
                     printf("Błąd w linii %d: nierozpoznany napis %s\n", yylineno, yytext);
                     exit(-1);
                 }
+.               {
+                    printf("Błąd w linii %d: niewłaściwy znak '%s'\n", yylineno, yytext);
+                    exit(-1);
+                }
+
+
 %%
 
 /*
