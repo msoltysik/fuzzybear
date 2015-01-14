@@ -1,0 +1,425 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"var",
+				"variableStack"
+			],
+			[
+				"LUx",
+				"LUxb_WithoutPartialSelectionOfTheRootElement"
+			],
+			[
+				"stca",
+				"identifier_stack"
+			],
+			[
+				"error",
+				"error_code"
+			],
+			[
+				"iden",
+				"identifier_stack_pop"
+			],
+			[
+				"LEX",
+				"LEX_OUTPUT"
+			],
+			[
+				"Yacc",
+				"YACC_OUTPUT"
+			],
+			[
+				"yy",
+				"yylval"
+			],
+			[
+				"debugg",
+				"DEBUGGING"
+			],
+			[
+				"for",
+				"forin	for … in … done"
+			],
+			[
+				"dire",
+				"directoryNames"
+			],
+			[
+				"Gau",
+				"GaussPartialPiviot"
+			],
+			[
+				"AR",
+				"ARGV1"
+			],
+			[
+				"ARGV",
+				"ARGV0"
+			],
+			[
+				"numto",
+				"num_top"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/parser.y",
+			"settings":
+			{
+				"buffer_size": 3946,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/compiler.h",
+			"settings":
+			{
+				"buffer_size": 2387,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 67.0,
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"set syntax c",
+				"Set Syntax: C"
+			],
+			[
+				"bison",
+				"Set Syntax: Bison"
+			],
+			[
+				"c",
+				"Set Syntax: C"
+			],
+			[
+				"Package Control: insta",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/msoltysik/Code/JFTT/fuzzybear",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/src",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/tests",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/tests/imp",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/tests/mr"
+	],
+	"file_history":
+	[
+		"/Users/msoltysik/Code/JFTT/fuzzybear/tests/imp/error1.imp",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/src/interpreter.cc",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/src/compiler.h",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/tests/imp/program0.imp",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/tests/imp/error5.imp",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/tests/mr/program0.mr",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/src/lexer.l",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/test",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/src/parser.y",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/parser.y",
+		"/Users/msoltysik/Desktop/test.java",
+		"/Users/msoltysik/Downloads/lista5/5.jl",
+		"/Users/msoltysik/Code/ObliczeniaNaukowe/l5/systems.jl",
+		"/Users/msoltysik/Code/ObliczeniaNaukowe/l5/z5/z5.jl",
+		"/Users/msoltysik/Downloads/lista5/systems.jl",
+		"/Users/msoltysik/Code/ObliczeniaNaukowe/l5/z4/z4.jl",
+		"/Users/msoltysik/Downloads/lista5/4a.jl",
+		"/Users/msoltysik/Downloads/lista5/4b.jl",
+		"/Users/msoltysik/Downloads/lista5/4c.jl",
+		"/Users/msoltysik/Code/ObliczeniaNaukowe/l5/z6/z6.jl",
+		"/Users/msoltysik/Downloads/lista5/6.jl",
+		"/Users/msoltysik/Code/ObliczeniaNaukowe/l5/zal1.jl",
+		"/Users/msoltysik/Code/ObliczeniaNaukowe/l4/algs.jl",
+		"/Users/msoltysik/Code/ObliczeniaNaukowe/l5/matcond.jl",
+		"/Users/msoltysik/Code/ObliczeniaNaukowe/l4/z4/z4.jl",
+		"/Users/msoltysik/Downloads/172826/lex.l",
+		"/Users/msoltysik/Code/innovativeproject-ciherd2/client/app/ciherd/jenkinses/jenkinses.html",
+		"/Users/msoltysik/Code/innovativeproject-ciherd2/client/app/ciherd/jenkinses/jenkinses.js",
+		"/Users/msoltysik/Code/innovativeproject-ciherd2/server/config/local.env.js",
+		"/Users/msoltysik/Code/socketTest/app.js",
+		"/Users/msoltysik/python-paralellization-experiments/pan-tadeusz-czyli-ostatni-zajazd-na-litwie.txt",
+		"/Users/msoltysik/Downloads/l2/z2/z2.jl",
+		"/Users/msoltysik/Code/ObliczeniaNaukowe/l5/zal2.jl",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/tests/imp/error4.imp",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/makefile",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/tests/imp/error3.imp",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/tests/imp/error6.imp",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/tests/imp/error2.imp",
+		"/Users/msoltysik/Code/JFTT/l2/z4.l",
+		"/Users/msoltysik/Code/JFTT/l2/z1.l",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/labor4/error4.imp",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/labor4/program1.imp",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/labor4/program0.mr",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/lexer.l",
+		"/Users/msoltysik/Code/JFTT/l3/parser.y",
+		"/Users/msoltysik/Downloads/basic_sanity/basic_sanity.py",
+		"/Users/msoltysik/Code/JFTT/l3/parser.tab.c",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/labor4/error5.imp",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/labor4/error3.imp",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/labor4/error2.imp",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/labor4/error6.imp",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/labor4/program2.imp",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/labor4/error1.imp",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/test.test",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/labor4/gramatyka.txt",
+		"/Users/msoltysik/Code/JFTT/fuzzybear/labor4/test.test",
+		"/Users/msoltysik/Code/SP/204449/bash/testdir/xg/y/y13.txt",
+		"/Users/msoltysik/Code/SP/204449/bash/testdir/xg/y/12.txt",
+		"/Users/msoltysik/Code/SP/204449/bash/testdir/xs/a/40.txt",
+		"/Users/msoltysik/Code/SP/204449/bash/z3.sh",
+		"/Users/msoltysik/Code/courtesan_zone/Procfile",
+		"/Users/msoltysik/Code/courtesan_zone/courtesan_zone/settings.py",
+		"/Users/msoltysik/Code/ObliczeniaNaukowe/l5/zal1.jl.txt",
+		"/Users/msoltysik/Code/ObliczeniaNaukowe/l4/z1/ilorazyRoznicowe.spec.jl",
+		"/Users/msoltysik/Code/SP/204449/bash/z1.sh",
+		"/Users/msoltysik/Code/SP/204449/bash/testdir/xs/a/12.txt",
+		"/Users/msoltysik/Code/SP/204449/bash/testdir/xs/a3/304.txt",
+		"/Users/msoltysik/Code/SP/204449/bash/testdir/xs/a4/30.txt",
+		"/Users/msoltysik/Code/SP/204449/bash/testdir/xg/y4/asdo.txt",
+		"/Users/msoltysik/Downloads/labor4/program2.imp",
+		"/Users/msoltysik/Downloads/labor4/program1.mr",
+		"/Users/msoltysik/Downloads/labor4/program1.imp",
+		"/Users/msoltysik/Downloads/labor4/program0.imp",
+		"/Users/msoltysik/Downloads/labor4/error5.imp",
+		"/Users/msoltysik/Downloads/labor4/error4.imp",
+		"/Users/msoltysik/Downloads/labor4/error3.imp",
+		"/Users/msoltysik/Downloads/labor4/error2.imp",
+		"/Users/msoltysik/Code/JFTT/l2/z4.txt",
+		"/Users/msoltysik/Downloads/parser (1).y",
+		"/Users/msoltysik/Downloads/parser (1).l",
+		"/Users/msoltysik/Downloads/makefile",
+		"/Users/msoltysik/Downloads/L3 2/makefile",
+		"/Users/msoltysik/Downloads/L3 2/in2post.y",
+		"/Users/msoltysik/Downloads/L3 2/in2post.l",
+		"/Users/msoltysik/Code/innovativeproject-ciherd2/node_modules/grunt-express-server/test/server.coffee",
+		"/Users/msoltysik/Code/innovativeproject-ciherd2/node_modules/grunt-autoprefixer/node_modules/autoprefixer/node_modules/postcss/lib/syntax-error.js",
+		"/Users/msoltysik/Code/innovativeproject-ciherd2/node_modules/jshint-stylish/stylish.js",
+		"/Users/msoltysik/Code/innovativeproject-ciherd2/package.json"
+	],
+	"find":
+	{
+		"height": 26.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"main",
+			"rozkladLU",
+			":",
+			"socket",
+			"start",
+			"yyerror(",
+			"IDENTIFIER",
+			"\n%}",
+			"class",
+			"		\n",
+			"start",
+			"\n			",
+			"pop",
+			"left"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/parser.y",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3946,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1060,
+								1060
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Bison/Bison.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 795.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/compiler.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2387,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								531,
+								531
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "compiler.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"z4",
+				"l4/z4/z4.jl"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 226.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
