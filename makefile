@@ -10,7 +10,7 @@ CC_OUTPUT=fuzzybear-cc
 all: 
 	 $(YACC) -d $(YACC_SRC) -o bison.tab.c
 	 $(LEX) $(LEX_SRC)
-	 g++-4.9 -o $(CC_OUTPUT) lex.yy.c bison.tab.c src/main.c
+	 g++-4.9 -o $(CC_OUTPUT) lex.yy.c bison.tab.c src/main.c -std=c++0x
 	 rm -f bison.tab.c bison.tab.h lex.yy.c 
 
 clean:

@@ -38,7 +38,7 @@ DECLARE vdeclarations IN commands END {
 
 vdeclarations:
 vdeclarations identifier {
-
+	define_variable($<identifier>2);
 }|{
 
 };
@@ -52,7 +52,7 @@ commands command {
 
 command:
 identifier ASSIGN expression SEM {
-
+	assign_variable($<identifier>1, $<identifier>3);
 }|IF condition THEN commands ENDIF {
 
 }|IF condition THEN commands ELSE commands ENDIF {
@@ -60,9 +60,9 @@ identifier ASSIGN expression SEM {
 }|WHILE condition DO commands ENDWHILE {
 
 }|GET identifier SEM {
-
+	get_variable($<identifier>2);
 }|PUT value SEM {
-
+	put_variable($<identifier>2);
 };
 
 expression:
