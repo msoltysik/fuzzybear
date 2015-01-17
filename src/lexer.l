@@ -1,6 +1,7 @@
 %option noyywrap
 %option yylineno
-
+%option c++
+ 
 %{
 	#include <stdlib.h>
 	#include "parser.tab.h"

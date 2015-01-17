@@ -6,7 +6,7 @@
 	#include <string.h>
 	#include "src/compiler.h"
 
-	bool DEBUGER_MODE = true;
+	bool DEBUGER_MODE = false;
 
 	void yyerror(char *errorinfo);
 	int yylex(void);

@@ -9,48 +9,19 @@ typedef struct {
 	char* value;
 } Variable;
 
-typedef struct {
-	Variable stack[9999];
-	int top;	
-} VariableStack;
-
-VariableStack* variableStack;
-
-void VariableStackInit()
-{
-	variableStack = (VariableStack*)malloc(sizeof(VariableStack));
-	variableStack->top = 0;
-}
-
-void pushVariableStack(Variable variable)
-{
-	variableStack->stack[variableStack->top] = variable;
-	variableStack->top++;
-}
-
-Variable popVariableStack()
-{
-	variableStack->top--;
-	return variableStack->stack[variableStack->top + 1];
-}
-
-void VariableStackFree()
-{
-	free(variableStack);
-}
 
 void error_factory(errors error)
 {
 	switch (error) {
 		case SECOND_DECLARATION:
-			printf("%s\n", "dupa1");
+			printf("%s\n", "SECOND_DECLARATION");
 			exit(-5);
 		case UNDECLARATED_VARIABLE:
-			printf("%s\n", "dupa1");
-			exit(-5);
+			printf("%s\n", "UNDECLARATED_VARIABLE");
+			exit(-10);
 		case USING_OF_UNDECLARATED_VARIABLE:
-			printf("%s\n", "dupa1");
-			exit(-5);
+			printf("%s\n", "USING_OF_UNDECLARATED_VARIABLE");
+			exit(-15);
 	}
 }
 
@@ -64,6 +35,11 @@ bool is_not_number(char* p)
     	}
     }
 	return false;
+}
+
+bool is_number(char* p)
+{
+	return !is_not_number(p);
 }
 
 
@@ -91,15 +67,6 @@ void put_variable(char* variable)
 void plus_expression(char* variable1, char* variable2)
 {
 	printf("1: %s\n", variable1);
-	if (is_not_number(variable1))
-	{
-		printf("Nie jest numerem\n");
-	}
-	printf("2: %s\n", variable2);
-	if (is_not_number(variable2))
-	{
-		printf("Nie jest numerem\n");
-	}
 
 }
 
@@ -164,7 +131,6 @@ void end_of_program()
 
 void init_cc()
 {
-	VariableStackInit();
 }
 
 void generate_cc()
@@ -174,5 +140,4 @@ void generate_cc()
 
 void free_cc()
 {
-	VariableStackFree();
 }

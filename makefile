@@ -13,7 +13,7 @@ all:
 	 $(CC) -o $(CC_OUTPUT) lex.yy.c parser.tab.c -lm -std=c11
 
 clean:
-	rm -f parser.tab.c parser.tab.h lex.yy.c $(CC_OUTPUT) interpreter
+	rm -f parser.tab.c parser.tab.h lex.yy.cc $(CC_OUTPUT) interpreter
 
 interpreter:
 	g++ -o interpreter src/interpreter.cc
