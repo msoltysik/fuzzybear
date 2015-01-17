@@ -8,12 +8,13 @@ CC=/usr/local/Cellar/gcc/4.9.2_1/bin/gcc-4.9
 CC_OUTPUT=fuzzybear-cc
 
 all: 
-	 $(YACC) -d $(YACC_SRC)
+	 $(YACC) -d $(YACC_SRC) -o bison.tab.c
 	 $(LEX) $(LEX_SRC)
-	 $(CC) -o $(CC_OUTPUT) lex.yy.c parser.tab.c -lm -std=c11
+	 g++-4.9 -o $(CC_OUTPUT) lex.yy.c bison.tab.c src/main.c
+	 rm -f bison.tab.c bison.tab.h lex.yy.c 
 
 clean:
-	rm -f parser.tab.c parser.tab.h lex.yy.cc $(CC_OUTPUT) interpreter
+	 rm -f bison.tab.c bison.tab.h lex.yy.c $(CC_OUTPUT)
 
 interpreter:
-	g++ -o interpreter src/interpreter.cc
+	g++ -o interpreter interpreter/interpreter.cc
