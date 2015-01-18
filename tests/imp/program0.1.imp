@@ -1,6 +1,9 @@
 DECLARE
-a
+a b
 IN
 GET a;
+GET b;
+
+PUT b;
 PUT a;
 END

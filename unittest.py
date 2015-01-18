@@ -9,18 +9,17 @@ expected = [y for x in os.walk("tests/unittests/expected/") for y in glob(os.pat
 
 fuzzybear = os.getcwd() + "/fuzzybear-cc"
 
-for test in range(1):
+for test in range(len(actual)):
 	actual_test = "/".join([os.getcwd(), actual[test]])
 	expected_test = "/".join([os.getcwd(), expected[test]])
 
-	print(actual_test)
-	print(expected_test)
-
-	proc = subprocess.Popen([fuzzybear, actual_test], stderr=subprocess.PIPE)
-	actual_output = proc.stderr.read()
+	proc = subprocess.Popen([fuzzybear, actual_test], shell=False, stdout=subprocess.PIPE)
+	actual_output = proc.stdout.read()
 	expected_output = open(expected_test, 'r').read()
-	
-	print(1)
-	print(repr(actual_output))
-	print(2)
-	print(repr(expected_output))
+	if actual_output == expected_output:
+		print("[#.%d] Test \"%s\" passed." % (test, actual[test]))
+	else:
+		print("[#.%d] Test \"%s\" failed." % (test, actual[test]))
+		print("Actual:\n" + actual_output)
+		print("Expected:\n" + expected_output)
+

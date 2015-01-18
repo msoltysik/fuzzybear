@@ -2,8 +2,12 @@
 #include <sstream>
 #include <regex>
 #include "helpers.c"
+
 using namespace std;
 extern int yylineno;
+
+int memory_pointer = 0;
+bool dbg = false;
 
 class ErrorFactory {
 public:
@@ -158,7 +162,6 @@ public:
 		}
 	}
 
-
 	void getMachineCode() {
 		getMachineCode(false);
 	}
@@ -169,7 +172,6 @@ public:
 	string name;					// nazwa
 	string value;					// wartość
 	bool declarated;				// zainicjowana?
-	bool in_memory;					// w pamięci?
 	unsigned int memory_adress; 	// numer komórki pamięci
 
 	Variable(string name) {
@@ -183,7 +185,7 @@ public:
 		this->declarated = true;
 	}
 
-	void setValue(std::string value) {
+	void setValue(string value) {
 		this->value = value;
 		this->declarated = true;
 	}
@@ -194,7 +196,7 @@ private:
 	vector<Variable*> variableVector;
 
 	bool inVector(Variable* variable) {
-		for(int it = 0; it < variableVector.size(); it++) {
+		for (int it = 0; it < variableVector.size(); it++) {
 			if (variableVector.at(it)->name == variable->name) {
 				return true;
 			}
@@ -203,7 +205,7 @@ private:
 	}
 
 	bool notInVector(string name) {
-		for(int it = 0; it < variableVector.size(); it++) {
+		for (int it = 0; it < variableVector.size(); it++) {
 			if (variableVector.at(it)->name == name) {
 				return false;
 			}
@@ -222,7 +224,6 @@ private:
 			}
 		}
 	}
-
 
 	int index(Variable* variable) {
 		for(int it = 0; it < variableVector.size(); it++) {
@@ -283,10 +284,14 @@ public:
 	}
 
 	void getVectorVariables() {
+		cout << endl;
 		for(int it = 0; it < variableVector.size(); it++) {
-			printf("Name: %s, Value: %s\n",
+			printf("Name: \"%s\", Value: \"%s\", declarated? \"%d\", memory_adress \"%d\"\n",
 				variableVector.at(it)->name.c_str(),
-				variableVector.at(it)->value.c_str());
+				variableVector.at(it)->value.c_str(),
+				variableVector.at(it)->declarated,
+				variableVector.at(it)->memory_adress
+				);
 		}
 	}
 };
@@ -295,15 +300,14 @@ public:
 VariableManager variableManager;
 MachineCode machineCode;
 
-
-
 int end_of_file() {
-
 	machineCode.push_HALT();
-	machineCode.getMachineCode(true);
 
-	variableManager.getVectorVariables();
- //    printf( "Koniec Programu\nLiczba zmiennych: %d\n", variableManager.size());
+	machineCode.getMachineCode(dbg);
+	if (dbg)
+	{
+		variableManager.getVectorVariables();
+	}
 }
 
 void define_variable(string variableName) {
@@ -311,27 +315,33 @@ void define_variable(string variableName) {
 }
 
 void get_variable(string variableName) {
+	int memory_adress = memory_pointer++;
 	variableManager.getVariable(variableName)->declarated = true;
+	variableManager.getVariable(variableName)->memory_adress = memory_adress;
+
 	machineCode.push_READ();
-	machineCode.push_STORE("0");
+	machineCode.push_STORE(to_string(memory_adress));
 
 }
 
 void assign_variable(string v1, string v2) {
-	printf("%s\n", v2.c_str());
-	variableManager.getVariable(v1)->setValue(v2);
+	// variableManager.getVariable(v1)->setValue(v2);
 }
 
 void put_variable(string v1) {
-	variableManager.getInitializedVariable(v1);
-	// machineCode.push_back("WRITE");
+	Variable *var =	variableManager.getInitializedVariable(v1);
+	cout << var->memory_adress << endl;
+	machineCode.push_LOAD(to_string(var->memory_adress));
+	machineCode.push_WRITE();
 }
 
 
 void _expression(string v1) {
-	if (is_identifier(v1)){
+	if (is_identifier(v1)) {
+		variableManager.getInitializedVariable(v1);
 
-	} else if (is_number(v1)){
+	} else if (is_number(v1)) {
+		printf("2\n");
 
 	} else {
 		cout << "BARDZO POWAŻNY BŁĄD[1] - expressions" << endl;

@@ -18,3 +18,6 @@ clean:
 
 i:
 	g++ -o i interpreter/interpreter.cc
+
+test: $(CC_OUTPUT)
+	python unittest.py
