@@ -1,21 +1,25 @@
 #include <iostream>
 #include <sstream>
 #include <regex>
-
+#include "helpers.c"
 using namespace std;
 extern int yylineno;
 
-bool is_identifier(string p) {
-    for (int i = 0; i < p.length(); i++) {
-    	if (p[i] < 48 || p[i] > 57)
-    		return true;
-    }
-	return false;
-}
-
-bool is_number(string p) {
-    return !is_identifier(p);
-}
+class ErrorFactory {
+public:
+	static void SECOND_DECLARATION(string variable) {
+		printf("Błąd w linii %d: druga deklaracja %s\n", yylineno, variable.c_str());
+		exit(-4);
+	}
+	static void UNDECLARATED_VARIABLE(string variable) {
+ 		printf("Błąd w linii %d: niezadeklarowana zmienna %s\n", yylineno, variable.c_str());
+ 		exit(-5);
+	}
+	static void USING_OF_UNDECLARATED_VARIABLE(string variable) {
+		printf("Błąd w linii %d: użycie niezainicjowanej zmiennej %s\n", yylineno, variable.c_str());
+		exit(-6);
+	}
+};
 
 
 class MachineCode {
@@ -142,55 +146,23 @@ public:
 
 //  -------------------------------------------------------------
 
-	void getCode() {
-		for (int i = 0; i < machineCode.size(); i++) {
-			cout << machineCode[i] << endl;
+	void getMachineCode(bool with_linenumber) {
+		if (with_linenumber) {
+			for (int i = 0; i < machineCode.size(); i++) {
+				cout << i << " " << machineCode[i] << endl;
+			}
+		} else {
+			for (int i = 0; i < machineCode.size(); i++) {
+				cout << machineCode[i] << endl;
+			}
 		}
 	}
-};
 
 
-string DecToBin(int number) {
-	if (number == 0) return "0";
-	if (number == 1) return "1";
-
-	if (number % 2 == 0) {
-		return DecToBin(number / 2) + "0";
-	} else {
-		return DecToBin(number / 2) + "1";
-	}
-}
-
-string BinToDec(string number) {
-	int result = 0;
-	int pow = 1;
-
-	for (int i = number.length() - 1; i >= 0; --i, pow <<= 1) {
-		result += (number[i] - '0') * pow;
-	}
-	ostringstream ss;
-	ss << result;
-
-	return ss.str();
-}
-
-
-class ErrorFactory {
-public:
-	static void SECOND_DECLARATION(string variable) {
-		printf("Błąd w linii %d: druga deklaracja %s\n", yylineno, variable.c_str());
-		exit(-4);
-	}
-	static void UNDECLARATED_VARIABLE(string variable) {
- 		printf("Błąd w linii %d: niezadeklarowana zmienna %s\n", yylineno, variable.c_str());
- 		exit(-5);
-	}
-	static void USING_OF_UNDECLARATED_VARIABLE(string variable) {
-		printf("Błąd w linii %d: użycie niezainicjowanej zmiennej %s\n", yylineno, variable.c_str());
-		exit(-6);
+	void getMachineCode() {
+		getMachineCode(false);
 	}
 };
-
 
 class Variable {
 public:
@@ -324,9 +296,11 @@ VariableManager variableManager;
 MachineCode machineCode;
 
 
+
 int end_of_file() {
+
 	machineCode.push_HALT();
-	machineCode.getCode();
+	machineCode.getMachineCode(true);
 
 	variableManager.getVectorVariables();
  //    printf( "Koniec Programu\nLiczba zmiennych: %d\n", variableManager.size());
@@ -338,8 +312,8 @@ void define_variable(string variableName) {
 
 void get_variable(string variableName) {
 	variableManager.getVariable(variableName)->declarated = true;
-	// machineCode.push_back("READ");
-	// machineCode.push_back("STORE 0");
+	machineCode.push_READ();
+	machineCode.push_STORE("0");
 
 }
 
