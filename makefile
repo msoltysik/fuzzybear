@@ -14,7 +14,7 @@ all:
 	 rm -f bison.tab.c bison.tab.h lex.yy.c 
 
 clean:
-	 rm -f bison.tab.c bison.tab.h lex.yy.c $(CC_OUTPUT)
+	 rm -f bison.tab.c bison.tab.h lex.yy.c $(CC_OUTPUT) i
 
-interpreter:
-	g++ -o interpreter interpreter/interpreter.cc
+i:
+	g++ -o i interpreter/interpreter.cc

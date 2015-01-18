@@ -18,9 +18,10 @@ int yyerror(const char *error)
 
 %}
 
-%union{
+%union {
 	char *num;
 	char *identifier;
+	char *value;
 }
 %token DECLARE IN END
 %token ASSIGN IF THEN ENDIF ELSE WHILE DO ENDWHILE GET PUT
@@ -67,32 +68,32 @@ identifier ASSIGN expression SEM {
 
 expression:
 value {
-	
+	_expression($<value>1);
 }|value PLUS value {
-
+	plus_expression($<value>1, $<value>3);
 }|value MINUS value {
-
+	minus_expression($<value>1, $<value>3);
 }|value TIMES value {
-
+	times_expression($<value>1, $<value>3);
 }|value DIV value {
-
+	div_expression($<value>1, $<value>3);
 }|value MOD value {
-
+	mod_expression($<value>1, $<value>3);
 };
 
 condition:
 value EQ value {
-
+	eq_condition($<value>1, $<value>3);
 }|value DIFF value {
-
+	diff_condition($<value>1, $<value>3);
 }|value LE value {
-
+	le_condition($<value>1, $<value>3);
 }|value GE value {
-
+	ge_condition($<value>1, $<value>3);
 }|value LEQ value {
-
-}|value GEQ value{
-
+	leq_condition($<value>1, $<value>3);
+}|value GEQ value {
+	geq_condition($<value>1, $<value>3);
 };
 
 value:
