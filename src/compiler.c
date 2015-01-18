@@ -7,7 +7,7 @@ using namespace std;
 extern int yylineno;
 
 int memory_pointer = 0;
-bool dbg = false;
+bool dbg = true;
 
 class ErrorFactory {
 public:
@@ -171,29 +171,33 @@ class Variable {
 public:
 	string name;					// nazwa
 	string value;					// wartość
-	bool declarated;				// zainicjowana?
+	bool initialized;				// zainicjowana?
 	unsigned int memory_adress; 	// numer komórki pamięci
 
 	Variable(string name) {
 		this->name = name;
-		this->declarated = false;
+		this->initialized = false;
 	}
 	
 	Variable(string name, string value) {
 		this->name = name;
 		this->value = value;
-		this->declarated = true;
+		this->initialized = true;
 	}
 
 	void setValue(string value) {
 		this->value = value;
-		this->declarated = true;
+		this->initialized = true;
 	}
 };
 
 class VariableManager {
 private:
 	vector<Variable*> variableVector;
+
+	bool inVectorByName() {
+		return false;
+	}
 
 	bool inVector(Variable* variable) {
 		for (int it = 0; it < variableVector.size(); it++) {
@@ -216,13 +220,14 @@ private:
 	bool notInitialized(string name) {
 		for(int it = 0; it < variableVector.size(); it++) {
 			if (variableVector.at(it)->name == name) {
-				if (variableVector.at(it)->declarated) {
+				if (variableVector.at(it)->initialized) {
 					return false;
 				} else {
 					return true;
 				}
 			}
 		}
+		return false;
 	}
 
 	int index(Variable* variable) {
@@ -289,7 +294,7 @@ public:
 			printf("Name: \"%s\", Value: \"%s\", declarated? \"%d\", memory_adress \"%d\"\n",
 				variableVector.at(it)->name.c_str(),
 				variableVector.at(it)->value.c_str(),
-				variableVector.at(it)->declarated,
+				variableVector.at(it)->initialized,
 				variableVector.at(it)->memory_adress
 				);
 		}
@@ -304,8 +309,7 @@ int end_of_file() {
 	machineCode.push_HALT();
 
 	machineCode.getMachineCode(dbg);
-	if (dbg)
-	{
+	if (dbg) {
 		variableManager.getVectorVariables();
 	}
 }
@@ -316,7 +320,7 @@ void define_variable(string variableName) {
 
 void get_variable(string variableName) {
 	int memory_adress = memory_pointer++;
-	variableManager.getVariable(variableName)->declarated = true;
+	variableManager.getVariable(variableName)->initialized = true;
 	variableManager.getVariable(variableName)->memory_adress = memory_adress;
 
 	machineCode.push_READ();
@@ -358,8 +362,9 @@ void plus_expression(string v1, string v2) {
 	{
 	} else {
 		cout << "BARDZO POWAŻNY BŁĄD[2] - expressions" << endl;
-	}	
+	}
 }
+
 void minus_expression(string v1, string v2) {
 	if (is_identifier(v1) && is_number(v2)) {
 	} else if (is_identifier(v1) && is_number(v2))
@@ -372,6 +377,7 @@ void minus_expression(string v1, string v2) {
 		cout << "BARDZO POWAŻNY BŁĄD[3] - expressions" << endl;
 	}	
 }
+
 void times_expression(string v1, string v2) {
 	if (is_identifier(v1) && is_number(v2)) {
 	} else if (is_identifier(v1) && is_number(v2))
@@ -384,6 +390,7 @@ void times_expression(string v1, string v2) {
 		cout << "BARDZO POWAŻNY BŁĄD[4] - expressions" << endl;
 	}	
 }
+
 void div_expression(string v1, string v2) {
 	if (is_identifier(v1) && is_number(v2)) {
 	} else if (is_identifier(v1) && is_number(v2))
@@ -396,6 +403,7 @@ void div_expression(string v1, string v2) {
 		cout << "BARDZO POWAŻNY BŁĄD[5] - expressions" << endl;
 	}	
 }
+
 void mod_expression(string v1, string v2) {
 	if (is_identifier(v1) && is_number(v2)) {
 	} else if (is_identifier(v1) && is_number(v2))
@@ -406,7 +414,7 @@ void mod_expression(string v1, string v2) {
 	{
 	} else {
 		cout << "BARDZO POWAŻNY BŁĄD[1] - expressions" << endl;
-	}	
+	}
 }
 
 

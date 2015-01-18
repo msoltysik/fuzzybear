@@ -16,9 +16,6 @@ bool is_number(string p) {
     return !is_identifier(p);
 }
 
-
-
-
 string DecToBin(int number) {
 	if (number == 0) return "0";
 	if (number == 1) return "1";
@@ -46,5 +43,5 @@ string BinToDec(string number) {
 
 string DecToBin(string number) {
 	int num = stoi(number);
-	return DecToBin(num);	
+	return DecToBin(num);
 }
