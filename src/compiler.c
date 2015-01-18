@@ -17,7 +17,137 @@ bool is_number(string p) {
     return !is_identifier(p);
 }
 
-std::vector<string> machineCode;
+
+class MachineCode {
+private:
+	std::vector<string> machineCode;
+public:
+	// pobraną liczbę zapisuje w rejestrze A
+	// k := k + 1
+	// time = 100
+	void push_READ() {
+		machineCode.push_back("READ");
+	}
+
+	// Wyświetla zawartość rejestru a
+	// k := k + 1
+	// time = 100
+	void push_WRITE() {
+		machineCode.push_back("WRITE");
+	}
+
+//  -------------------------------------------------------------
+
+	// a := p[i]
+	// k := k + 1
+	// time = 10
+	void push_LOAD(string i) {
+		string cmd = "LOAD " + i;
+		machineCode.push_back(cmd);
+	}
+
+	// p[i] := a
+	// k := k + 1
+	// time = 10
+	void push_STORE(string i) {
+		string cmd = "STORE " + i;
+		machineCode.push_back(cmd);
+	}
+
+//  -------------------------------------------------------------
+
+	// a := a + p[i]
+	// k := k + 1
+	// time = 30
+	void push_ADD(string i) {
+		string cmd = "ADD " + i;
+		machineCode.push_back(cmd);
+	}
+
+	// a := max(a - p[i], 0)
+	// k := k + 1
+	// time = 30
+	void push_SUB(string i) {
+		string cmd = "SUB " + i;
+		machineCode.push_back(cmd);
+	}
+
+	// a := floor(a/2**p[i])
+	// k := k + 1
+	// time = 12
+	void push_SHR(string i) {
+		string cmd = "SHR " + i;
+		machineCode.push_back(cmd);
+	}
+
+	// a := a * 2**p[i]
+	// k := k + 1
+	// time = 12
+	void push_SHL(string i) {
+		string cmd = "SHL " + i;
+		machineCode.push_back(cmd);
+	}
+
+//  -------------------------------------------------------------
+
+	// a := a + 1
+	// k := k + 1
+	// time = 1
+	void push_INC(string i) {
+		string cmd = "SHL " + i;
+		machineCode.push_back(cmd);
+	}
+
+	// a := 0
+	// k := k + 1
+	// time = 1
+	void push_RESET(string i) {
+		string cmd = "SHL " + i;
+		machineCode.push_back(cmd);
+	}
+
+//  -------------------------------------------------------------
+
+	// k := i
+	// time = 1
+	void push_JUMP(string i) {
+		string cmd = "JUMP " + i;
+		machineCode.push_back(cmd);
+	}
+
+	// Jeśli a = 0, to k :=i
+	// W przeciwnym p. k := k + 1
+	// time = 1
+	void push_JZERO(string i) {
+		string cmd = "SHL " + i;
+		machineCode.push_back(cmd);
+	}
+
+	// Jeśli a nieparzyste, to k := i
+	// W przeciwnym przypadku: k := k + 1
+	// time = 1
+	void push_JODD(string i) {
+		string cmd = "SHL " + i;
+		machineCode.push_back(cmd);
+	}
+
+//  -------------------------------------------------------------
+
+	// Zatrzymaj program
+	// time = 0
+	void push_HALT() {
+		string cmd = "HALT";
+		machineCode.push_back(cmd);
+	}
+
+//  -------------------------------------------------------------
+
+	void getCode() {
+		for (int i = 0; i < machineCode.size(); i++) {
+			cout << machineCode[i] << endl;
+		}
+	}
+};
 
 
 string DecToBin(int number) {
@@ -191,17 +321,14 @@ public:
 
 
 VariableManager variableManager;
-
+MachineCode machineCode;
 
 
 int end_of_file() {
-	machineCode.push_back("HALT");
+	machineCode.push_HALT();
+	machineCode.getCode();
 
-	for (int i = 0; i < machineCode.size(); i++) {
-   		cout << machineCode[i] << endl;
-	}
-
-	// variableManager.getVectorVariables();
+	variableManager.getVectorVariables();
  //    printf( "Koniec Programu\nLiczba zmiennych: %d\n", variableManager.size());
 }
 
@@ -211,8 +338,8 @@ void define_variable(string variableName) {
 
 void get_variable(string variableName) {
 	variableManager.getVariable(variableName)->declarated = true;
-	machineCode.push_back("READ");
-	machineCode.push_back("STORE 0");
+	// machineCode.push_back("READ");
+	// machineCode.push_back("STORE 0");
 
 }
 
@@ -223,7 +350,7 @@ void assign_variable(string v1, string v2) {
 
 void put_variable(string v1) {
 	variableManager.getInitializedVariable(v1);
-	machineCode.push_back("WRITE");
+	// machineCode.push_back("WRITE");
 }
 
 
@@ -302,12 +429,13 @@ void mod_expression(string v1, string v2) {
 // Conditions
 void eq_condition(string v1, string v2) {
 	if (is_identifier(v1) && is_number(v2)) {
-	} else if (is_identifier(v1) && is_number(v2))
-	{
-	} else if (is_identifier(v1) && is_identifier(v2))
-	{
-	} else if (is_number(v1) && is_number(v2))
-	{
+
+	} else if (is_identifier(v1) && is_number(v2)) {
+
+	} else if (is_identifier(v1) && is_identifier(v2)) {
+
+	} else if (is_number(v1) && is_number(v2)) {
+
 	} else {
 		cout << "BARDZO POWAŻNY BŁĄD[1] - conditions" << endl;
 	}
