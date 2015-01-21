@@ -1,0 +1,13 @@
+(* brak deklaracji j *)
+DECLARE
+	a b
+IN
+	GET a;
+	GET b;
+	a ASSIGN 512 TIMES b;
+	WHILE j LEQ 100000 DO
+		b ASSIGN b;
+	ENDWHILE
+	PUT a;
+	PUT b;
+END

@@ -7,7 +7,7 @@ using namespace std;
 extern int yylineno;
 
 int memory_pointer = 0;
-bool dbg = true;
+bool dbg = false;
 
 class ErrorFactory {
 public:
@@ -307,7 +307,9 @@ MachineCode machineCode;
 
 int end_of_file() {
 	machineCode.push_HALT();
+}
 
+void generate_cc() {
 	machineCode.getMachineCode(dbg);
 	if (dbg) {
 		variableManager.getVectorVariables();
