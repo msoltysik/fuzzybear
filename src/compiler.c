@@ -6,8 +6,10 @@
 using namespace std;
 extern int yylineno;
 
-int memory_pointer = 0;
-bool dbg = false;
+// Stąd zaczynamy zapisywać zmienne
+// Pierwsza zmienna jest w p[10]
+int memory_pointer = 9; 
+bool dbg = true;
 
 class ErrorFactory {
 public:
@@ -44,8 +46,6 @@ public:
 		machineCode.push_back("WRITE");
 	}
 
-//  -------------------------------------------------------------
-
 	// a := p[i]
 	// k := k + 1
 	// time = 10
@@ -61,8 +61,6 @@ public:
 		string cmd = "STORE " + i;
 		machineCode.push_back(cmd);
 	}
-
-//  -------------------------------------------------------------
 
 	// a := a + p[i]
 	// k := k + 1
@@ -96,25 +94,21 @@ public:
 		machineCode.push_back(cmd);
 	}
 
-//  -------------------------------------------------------------
-
 	// a := a + 1
 	// k := k + 1
 	// time = 1
-	void push_INC(string i) {
-		string cmd = "SHL " + i;
+	void push_INC() {
+		string cmd = "INC";
 		machineCode.push_back(cmd);
 	}
 
 	// a := 0
 	// k := k + 1
 	// time = 1
-	void push_RESET(string i) {
-		string cmd = "SHL " + i;
+	void push_RESET() {
+		string cmd = "RESET";
 		machineCode.push_back(cmd);
 	}
-
-//  -------------------------------------------------------------
 
 	// k := i
 	// time = 1
@@ -139,8 +133,6 @@ public:
 		machineCode.push_back(cmd);
 	}
 
-//  -------------------------------------------------------------
-
 	// Zatrzymaj program
 	// time = 0
 	void push_HALT() {
@@ -148,7 +140,6 @@ public:
 		machineCode.push_back(cmd);
 	}
 
-//  -------------------------------------------------------------
 
 	void getMachineCode(bool with_linenumber) {
 		if (with_linenumber) {
@@ -189,6 +180,15 @@ public:
 		this->value = value;
 		this->initialized = true;
 	}
+
+	void setMemoryAdress(unsigned int memory_adress) {
+		this->memory_adress = memory_adress;
+	}
+
+	unsigned int getMemoryAdress() {
+		return this->memory_adress;
+	}
+
 };
 
 class VariableManager {
@@ -317,7 +317,9 @@ void generate_cc() {
 }
 
 void define_variable(string variableName) {
-	variableManager.addVariable(new Variable(variableName));
+	Variable* temp = new Variable(variableName);
+	temp->setMemoryAdress(++memory_pointer);
+	variableManager.addVariable(temp);
 }
 
 void get_variable(string variableName) {
@@ -330,13 +332,13 @@ void get_variable(string variableName) {
 
 }
 
-void assign_variable(string v1, string v2) {
-	// variableManager.getVariable(v1)->setValue(v2);
+void assign_variable(string v1) {
+	Variable *var =	variableManager.getVariable(v1);
+	machineCode.push_LOAD(to_string(var->memory_adress));
 }
 
 void put_variable(string v1) {
 	Variable *var =	variableManager.getInitializedVariable(v1);
-	cout << var->memory_adress << endl;
 	machineCode.push_LOAD(to_string(var->memory_adress));
 	machineCode.push_WRITE();
 }
@@ -344,10 +346,23 @@ void put_variable(string v1) {
 
 void _expression(string v1) {
 	if (is_identifier(v1)) {
-		variableManager.getInitializedVariable(v1);
+		cout << variableManager.getInitializedVariable(v1)->getMemoryAdress() << endl;
+		cout << "lol" << endl;
 
 	} else if (is_number(v1)) {
-		printf("2\n");
+		string x = DecToBin(v1);
+		machineCode.push_RESET();		
+
+		for(char& c : x) {
+			if (c == '1') {
+				machineCode.push_INC();
+				machineCode.push_STORE("0");
+				machineCode.push_SHL("0");
+
+			}
+
+			cout << c << endl;
+		}
 
 	} else {
 		cout << "BARDZO POWAŻNY BŁĄD[1] - expressions" << endl;

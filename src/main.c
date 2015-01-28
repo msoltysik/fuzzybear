@@ -9,8 +9,8 @@ extern int yyparse();
 extern void generate_cc();
 
 int main(int argc, char **argv) {
-    ++argv, --argc;  /* skip over program name */
-	
+    ++argv, --argc;
+    
 	if (argc == 1)
 	{
 		yyin = fopen(argv[0], "r");

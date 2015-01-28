@@ -10,8 +10,7 @@
 int yylex(void);
 extern int yylineno;
 
-int yyerror(const char *error) 
-{ 
+int yyerror(const char *error) {
 	printf("ERROR: Line %d - %s\n", yylineno, error);
 	exit(-3); return 0;
 }
@@ -53,7 +52,7 @@ commands command {
 
 command:
 identifier ASSIGN expression SEM {
-	assign_variable($<identifier>1, $<identifier>3);
+	assign_variable($<identifier>1);
 }|IF condition THEN commands ENDIF {
 
 }|IF condition THEN commands ELSE commands ENDIF {
