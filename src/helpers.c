@@ -11,11 +11,10 @@ bool is_identifier(string p) {
 	return false;
 }
 
-
 bool is_number(string p) {
     return !is_identifier(p);
 }
-
+/*
 string DecToBin(int number) {
 	if (number == 0) return "0";
 	if (number == 1) return "1";
@@ -32,7 +31,7 @@ string DecToBin(string number) {
 	return DecToBin(num);
 }
 
-/*string BinToDec(string number) {
+string BinToDec(string number) {
 	int result = 0;
 	int pow = 1;
 
@@ -43,7 +42,7 @@ string DecToBin(string number) {
 	ss << result;
 
 	return ss.str();
-}
+}*/
 
 bool isOdd(char c) {
 	int number = (int)c - (int)48;
@@ -68,9 +67,8 @@ string divByTwo(string s) {
 			next_add = 0;
 		}
 
-		char new_ch = (char)((ch - '0') / (2 + add + '0'));
+		char new_ch = (char)((ch - '0') / 2 + add + '0');
 		new_s.push_back(new_ch);
-		cout << new_s << endl;
 	}
 
 	if(new_s != "0") {
@@ -87,7 +85,7 @@ string DecToBin(string num) {
 	string stack = "";
 
 	while (num != "0") {
-		if (isOdd(num))
+		if (isOdd(num[num.size() - 1]))
 		{
 			stack = "1" + stack;
 		} else {
@@ -97,4 +95,3 @@ string DecToBin(string num) {
 	}
 	return stack;
 }
-*/

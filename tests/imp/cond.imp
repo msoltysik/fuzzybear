@@ -1,0 +1,16 @@
+(* cond.imp - instrukcje warunkowe *)
+DECLARE
+    a b
+IN
+    GET a;
+    a ASSIGN 5 PLUS a;
+	b ASSIGN a MINUS 2047;
+    IF a LE b THEN
+	ELSE 
+	    PUT a;
+	ENDIF
+	IF b LEQ a THEN
+	    PUT b;
+	ELSE
+	ENDIF
+END

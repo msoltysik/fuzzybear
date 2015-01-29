@@ -1,9 +1,8 @@
 DECLARE
   a b c
 IN
-	b ASSIGN 1;
-	c ASSIGN 5;
-	a ASSIGN 25 TIMES c;
-	a ASSIGN 25 TIMES a;
+	b ASSIGN 10;
+	c ASSIGN 20;
+	a ASSIGN b MOD 12;
 	PUT a;
 END

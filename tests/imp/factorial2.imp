@@ -1,0 +1,15 @@
+(* factorial2.imp - obliczanie n! dla n podanego przez uzytkownika *)
+(* Czas wykonywania tego programu nie powinien istotnie roznic sie
+   od czasu wykonywania factorial.imp (dla tych samych n). *)
+DECLARE
+    fact n i
+IN
+    GET n;
+    i ASSIGN 1;
+    fact ASSIGN i;
+    WHILE i LEQ n DO
+        fact ASSIGN i TIMES fact;
+		i ASSIGN 1 PLUS i;
+    ENDWHILE
+	PUT fact;
+END

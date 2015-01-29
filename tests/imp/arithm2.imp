@@ -1,0 +1,22 @@
+(* arithm2.imp - operacje arytmetyczne **cz. 2** *)
+DECLARE
+    a b i
+IN
+    GET a;
+    i ASSIGN 1;
+	WHILE i LEQ 1000 DO
+	    b ASSIGN 25663607 PLUS 41445257;
+		a ASSIGN b PLUS a;
+		i ASSIGN i PLUS 1;
+	ENDWHILE
+	PUT a;
+	
+	GET a;
+    i ASSIGN 1;
+	WHILE i LEQ 10 DO
+	    a ASSIGN a TIMES 32;
+		i ASSIGN i PLUS 1;
+	ENDWHILE
+	PUT a;
+	
+END

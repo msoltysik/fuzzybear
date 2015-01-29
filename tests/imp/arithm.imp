@@ -1,0 +1,47 @@
+(* arithm.imp - operacje arytmetyczne cz. ***1*** *)
+DECLARE
+    a b c d j i t
+IN
+    a ASSIGN 17822;
+	c ASSIGN 55;
+	d ASSIGN 2;
+	j ASSIGN 1;
+	i ASSIGN 1000;
+	
+	GET b;
+	b ASSIGN b PLUS d;
+	IF b GE a THEN  
+	    t ASSIGN b;
+		b ASSIGN a;
+	    a ASSIGN t;
+	ELSE 
+	    IF b EQ a THEN 
+	        b ASSIGN b MINUS j;
+	    ENDIF
+	ENDIF
+	
+    WHILE i GE 0 DO
+	    t ASSIGN b DIV a;
+		c ASSIGN c PLUS t;
+		c ASSIGN j TIMES c;
+		b ASSIGN d PLUS b;
+		a ASSIGN d PLUS a;
+		i ASSIGN i MINUS 1;
+	ENDWHILE
+	PUT c;
+	
+	GET b;
+	IF b GE 50 THEN
+	    b ASSIGN b MOD 50;
+	ENDIF
+	i ASSIGN b;
+	b ASSIGN b PLUS 1000;
+	WHILE i LE b DO
+	    t ASSIGN i DIV j;
+	    c ASSIGN c PLUS t;
+		t ASSIGN i MOD 1;
+		c ASSIGN c PLUS t;
+		i ASSIGN 1 PLUS i;
+	ENDWHILE
+	PUT c;
+END

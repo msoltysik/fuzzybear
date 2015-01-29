@@ -1,0 +1,13 @@
+(* factorial.imp - obliczanie n! dla n podanego przez uzytkownika *)
+DECLARE
+    fact n i
+IN
+    GET n;
+    i ASSIGN 1;
+    fact ASSIGN i;
+    WHILE i LEQ n DO
+        fact ASSIGN fact TIMES i;
+		i ASSIGN i PLUS 1;
+    ENDWHILE
+	PUT fact;
+END

@@ -1,0 +1,17 @@
+(* loop.imp - petle *)
+DECLARE
+    a b i j
+IN
+    GET a;
+    GET b;
+	j ASSIGN 512;
+	i ASSIGN 1;
+	WHILE i LEQ 100000 DO
+	    b ASSIGN b;
+		a ASSIGN j;
+		i ASSIGN i PLUS 1;
+	ENDWHILE
+	
+	PUT a;
+	PUT b;
+END

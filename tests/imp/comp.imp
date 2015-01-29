@@ -1,0 +1,20 @@
+(* comp.imp - pewne obliczenia *)
+DECLARE
+    a aa b c d i p q r
+IN
+    GET a;
+	GET aa;
+    b ASSIGN 454;
+	c ASSIGN 5412111674162;
+	d ASSIGN 0;
+	i ASSIGN 1;
+	WHILE i LEQ 1000 DO
+	    p ASSIGN i TIMES b;
+		q ASSIGN p MOD aa;
+		r ASSIGN c DIV q;
+		d ASSIGN d PLUS r;
+		i ASSIGN i PLUS 1;
+	ENDWHILE
+
+	PUT a;
+END

@@ -614,21 +614,437 @@ void times_expression(string v1, string v2) {
 	}
 }
 
+// p[0] | p[1] | p[2] |  p[3]    | p[4]
+//  1   |  v1  |  v2  |  v1/v3   | padding
 void div_expression(string v1, string v2) {
 	if (is_identifier(v1) && is_number(v2)) {
+		Variable *var1 = variableManager.getInitializedVariable(v1);
+		machineCode.push_RESET();
+		machineCode.push_STORE("3");
+		machineCode.push_INC();
+		machineCode.push_STORE("0");
+		machineCode.push_LOAD(var1->getMemoryAdress());
+		machineCode.push_STORE("1");
+		generate_number(v2);
+		machineCode.push_STORE("2");
+		machineCode.push_JZERO(machineCode.lineNumber() + 33);
+
+		machineCode.push_RESET();
+		machineCode.push_INC();
+		machineCode.push_STORE("4");
+		machineCode.push_LOAD("1");
+		machineCode.push_SUB("2");
+		machineCode.push_JZERO(machineCode.lineNumber() + 8);
+		machineCode.push_LOAD("2");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("2");
+		machineCode.push_LOAD("4");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("4");
+		machineCode.push_JUMP(machineCode.lineNumber() - 9);
+
+		machineCode.push_LOAD("4");
+		machineCode.push_JZERO(machineCode.lineNumber() + 18);
+		machineCode.push_LOAD("2");
+		machineCode.push_SUB("1");
+		machineCode.push_JZERO(machineCode.lineNumber() + 2);
+		machineCode.push_JUMP(machineCode.lineNumber() + 7);
+
+		machineCode.push_LOAD("3");
+		machineCode.push_ADD("4");
+		machineCode.push_STORE("3");
+
+		machineCode.push_LOAD("1");
+		machineCode.push_SUB("2");
+		machineCode.push_STORE("1");
+
+		machineCode.push_LOAD("2");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("2");
+
+		machineCode.push_LOAD("4");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("4");
+
+		machineCode.push_JUMP(machineCode.lineNumber() - 18);
+
+		machineCode.push_LOAD("3");
 	} else if (is_number(v1) && is_identifier(v2)) {
+		Variable *var2 = variableManager.getInitializedVariable(v2);
+		machineCode.push_RESET();
+		machineCode.push_STORE("3");
+		machineCode.push_INC();
+		machineCode.push_STORE("0");
+		generate_number(v1);
+		machineCode.push_STORE("1");
+		machineCode.push_LOAD(var2->getMemoryAdress());
+		machineCode.push_STORE("2");
+
+		machineCode.push_JZERO(machineCode.lineNumber() + 33);
+
+		machineCode.push_RESET();
+		machineCode.push_INC();
+		machineCode.push_STORE("4");
+		machineCode.push_LOAD("1");
+		machineCode.push_SUB("2");
+		machineCode.push_JZERO(machineCode.lineNumber() + 8);
+		machineCode.push_LOAD("2");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("2");
+		machineCode.push_LOAD("4");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("4");
+		machineCode.push_JUMP(machineCode.lineNumber() - 9);
+
+		machineCode.push_LOAD("4");
+		machineCode.push_JZERO(machineCode.lineNumber() + 18);
+		machineCode.push_LOAD("2");
+		machineCode.push_SUB("1");
+		machineCode.push_JZERO(machineCode.lineNumber() + 2);
+		machineCode.push_JUMP(machineCode.lineNumber() + 7);
+
+		machineCode.push_LOAD("3");
+		machineCode.push_ADD("4");
+		machineCode.push_STORE("3");
+
+		machineCode.push_LOAD("1");
+		machineCode.push_SUB("2");
+		machineCode.push_STORE("1");
+
+		machineCode.push_LOAD("2");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("2");
+
+		machineCode.push_LOAD("4");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("4");
+
+		machineCode.push_JUMP(machineCode.lineNumber() - 18);
+
+		machineCode.push_LOAD("3");
 	} else if (is_identifier(v1) && is_identifier(v2)) {
+		Variable *var1 = variableManager.getInitializedVariable(v1);
+		Variable *var2 = variableManager.getInitializedVariable(v2);
+
+		machineCode.push_RESET();
+		machineCode.push_STORE("3");
+		machineCode.push_INC();
+		machineCode.push_STORE("0");
+		machineCode.push_LOAD(var1->getMemoryAdress());
+		machineCode.push_STORE("1");
+		machineCode.push_LOAD(var2->getMemoryAdress());
+		machineCode.push_STORE("2");
+		machineCode.push_JZERO(machineCode.lineNumber() + 33);
+
+		machineCode.push_RESET();
+		machineCode.push_INC();
+		machineCode.push_STORE("4");
+		machineCode.push_LOAD("1");
+		machineCode.push_SUB("2");
+		machineCode.push_JZERO(machineCode.lineNumber() + 8);
+		machineCode.push_LOAD("2");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("2");
+		machineCode.push_LOAD("4");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("4");
+		machineCode.push_JUMP(machineCode.lineNumber() - 9);
+
+		machineCode.push_LOAD("4");
+		machineCode.push_JZERO(machineCode.lineNumber() + 18);
+		machineCode.push_LOAD("2");
+		machineCode.push_SUB("1");
+		machineCode.push_JZERO(machineCode.lineNumber() + 2);
+		machineCode.push_JUMP(machineCode.lineNumber() + 7);
+
+		machineCode.push_LOAD("3");
+		machineCode.push_ADD("4");
+		machineCode.push_STORE("3");
+
+		machineCode.push_LOAD("1");
+		machineCode.push_SUB("2");
+		machineCode.push_STORE("1");
+
+		machineCode.push_LOAD("2");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("2");
+
+		machineCode.push_LOAD("4");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("4");
+
+		machineCode.push_JUMP(machineCode.lineNumber() - 18);
+
+		machineCode.push_LOAD("3");
 	} else if (is_number(v1) && is_number(v2)) {
+		machineCode.push_RESET();
+		machineCode.push_STORE("3");
+		machineCode.push_INC();
+		machineCode.push_STORE("0");
+		generate_number(v1);
+		machineCode.push_STORE("1");
+		generate_number(v2);
+		machineCode.push_STORE("2");
+		machineCode.push_JZERO(machineCode.lineNumber() + 33);
+
+		machineCode.push_RESET();
+		machineCode.push_INC();
+		machineCode.push_STORE("4");
+		machineCode.push_LOAD("1");
+		machineCode.push_SUB("2");
+		machineCode.push_JZERO(machineCode.lineNumber() + 8);
+		machineCode.push_LOAD("2");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("2");
+		machineCode.push_LOAD("4");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("4");
+		machineCode.push_JUMP(machineCode.lineNumber() - 9);
+
+		machineCode.push_LOAD("4");
+		machineCode.push_JZERO(machineCode.lineNumber() + 18);
+		machineCode.push_LOAD("2");
+		machineCode.push_SUB("1");
+		machineCode.push_JZERO(machineCode.lineNumber() + 2);
+		machineCode.push_JUMP(machineCode.lineNumber() + 7);
+
+		machineCode.push_LOAD("3");
+		machineCode.push_ADD("4");
+		machineCode.push_STORE("3");
+
+		machineCode.push_LOAD("1");
+		machineCode.push_SUB("2");
+		machineCode.push_STORE("1");
+
+		machineCode.push_LOAD("2");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("2");
+
+		machineCode.push_LOAD("4");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("4");
+
+		machineCode.push_JUMP(machineCode.lineNumber() - 18);
+
+		machineCode.push_LOAD("3");
 	} else {
 		cout << "BARDZO POWAŻNY BŁĄD[5] - expressions" << endl;
 	}
 }
 
+// p[0] | p[1] | p[2] |  p[3]    | p[4]
+//  1   |  v1  |  v2  |  v1/v3   | padding
 void mod_expression(string v1, string v2) {
-	if (is_identifier(v1) && is_number(v2)) {
+		if (is_identifier(v1) && is_number(v2)) {
+		Variable *var1 = variableManager.getInitializedVariable(v1);
+		machineCode.push_RESET();
+		machineCode.push_STORE("3");
+		machineCode.push_INC();
+		machineCode.push_STORE("0");
+		machineCode.push_LOAD(var1->getMemoryAdress());
+		machineCode.push_STORE("1");
+		generate_number(v2);
+		machineCode.push_STORE("2");
+		machineCode.push_JZERO(machineCode.lineNumber() + 33);
+
+		machineCode.push_RESET();
+		machineCode.push_INC();
+		machineCode.push_STORE("4");
+		machineCode.push_LOAD("1");
+		machineCode.push_SUB("2");
+		machineCode.push_JZERO(machineCode.lineNumber() + 8);
+		machineCode.push_LOAD("2");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("2");
+		machineCode.push_LOAD("4");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("4");
+		machineCode.push_JUMP(machineCode.lineNumber() - 9);
+
+		machineCode.push_LOAD("4");
+		machineCode.push_JZERO(machineCode.lineNumber() + 18);
+		machineCode.push_LOAD("2");
+		machineCode.push_SUB("1");
+		machineCode.push_JZERO(machineCode.lineNumber() + 2);
+		machineCode.push_JUMP(machineCode.lineNumber() + 7);
+
+		machineCode.push_LOAD("3");
+		machineCode.push_ADD("4");
+		machineCode.push_STORE("3");
+
+		machineCode.push_LOAD("1");
+		machineCode.push_SUB("2");
+		machineCode.push_STORE("1");
+
+		machineCode.push_LOAD("2");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("2");
+
+		machineCode.push_LOAD("4");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("4");
+
+		machineCode.push_JUMP(machineCode.lineNumber() - 18);
+
+		machineCode.push_LOAD("1");
 	} else if (is_number(v1) && is_identifier(v2)) {
+		Variable *var2 = variableManager.getInitializedVariable(v2);
+		machineCode.push_RESET();
+		machineCode.push_STORE("3");
+		machineCode.push_INC();
+		machineCode.push_STORE("0");
+		generate_number(v1);
+		machineCode.push_STORE("1");
+		machineCode.push_LOAD(var2->getMemoryAdress());
+		machineCode.push_STORE("2");
+
+		machineCode.push_JZERO(machineCode.lineNumber() + 33);
+
+		machineCode.push_RESET();
+		machineCode.push_INC();
+		machineCode.push_STORE("4");
+		machineCode.push_LOAD("1");
+		machineCode.push_SUB("2");
+		machineCode.push_JZERO(machineCode.lineNumber() + 8);
+		machineCode.push_LOAD("2");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("2");
+		machineCode.push_LOAD("4");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("4");
+		machineCode.push_JUMP(machineCode.lineNumber() - 9);
+
+		machineCode.push_LOAD("4");
+		machineCode.push_JZERO(machineCode.lineNumber() + 18);
+		machineCode.push_LOAD("2");
+		machineCode.push_SUB("1");
+		machineCode.push_JZERO(machineCode.lineNumber() + 2);
+		machineCode.push_JUMP(machineCode.lineNumber() + 7);
+
+		machineCode.push_LOAD("3");
+		machineCode.push_ADD("4");
+		machineCode.push_STORE("3");
+
+		machineCode.push_LOAD("1");
+		machineCode.push_SUB("2");
+		machineCode.push_STORE("1");
+
+		machineCode.push_LOAD("2");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("2");
+
+		machineCode.push_LOAD("4");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("4");
+
+		machineCode.push_JUMP(machineCode.lineNumber() - 18);
+
+		machineCode.push_LOAD("1");
 	} else if (is_identifier(v1) && is_identifier(v2)) {
+		Variable *var1 = variableManager.getInitializedVariable(v1);
+		Variable *var2 = variableManager.getInitializedVariable(v2);
+
+		machineCode.push_RESET();
+		machineCode.push_STORE("3");
+		machineCode.push_INC();
+		machineCode.push_STORE("0");
+		machineCode.push_LOAD(var1->getMemoryAdress());
+		machineCode.push_STORE("1");
+		machineCode.push_LOAD(var2->getMemoryAdress());
+		machineCode.push_STORE("2");
+		machineCode.push_JZERO(machineCode.lineNumber() + 33);
+
+		machineCode.push_RESET();
+		machineCode.push_INC();
+		machineCode.push_STORE("4");
+		machineCode.push_LOAD("1");
+		machineCode.push_SUB("2");
+		machineCode.push_JZERO(machineCode.lineNumber() + 8);
+		machineCode.push_LOAD("2");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("2");
+		machineCode.push_LOAD("4");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("4");
+		machineCode.push_JUMP(machineCode.lineNumber() - 9);
+
+		machineCode.push_LOAD("4");
+		machineCode.push_JZERO(machineCode.lineNumber() + 18);
+		machineCode.push_LOAD("2");
+		machineCode.push_SUB("1");
+		machineCode.push_JZERO(machineCode.lineNumber() + 2);
+		machineCode.push_JUMP(machineCode.lineNumber() + 7);
+
+		machineCode.push_LOAD("3");
+		machineCode.push_ADD("4");
+		machineCode.push_STORE("3");
+
+		machineCode.push_LOAD("1");
+		machineCode.push_SUB("2");
+		machineCode.push_STORE("1");
+
+		machineCode.push_LOAD("2");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("2");
+
+		machineCode.push_LOAD("4");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("4");
+
+		machineCode.push_JUMP(machineCode.lineNumber() - 18);
+
+		machineCode.push_LOAD("1");
 	} else if (is_number(v1) && is_number(v2)) {
+		machineCode.push_RESET();
+		machineCode.push_STORE("3");
+		machineCode.push_INC();
+		machineCode.push_STORE("0");
+		generate_number(v1);
+		machineCode.push_STORE("1");
+		generate_number(v2);
+		machineCode.push_STORE("2");
+		machineCode.push_JZERO(machineCode.lineNumber() + 33);
+
+		machineCode.push_RESET();
+		machineCode.push_INC();
+		machineCode.push_STORE("4");
+		machineCode.push_LOAD("1");
+		machineCode.push_SUB("2");
+		machineCode.push_JZERO(machineCode.lineNumber() + 8);
+		machineCode.push_LOAD("2");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("2");
+		machineCode.push_LOAD("4");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("4");
+		machineCode.push_JUMP(machineCode.lineNumber() - 9);
+
+		machineCode.push_LOAD("4");
+		machineCode.push_JZERO(machineCode.lineNumber() + 18);
+		machineCode.push_LOAD("2");
+		machineCode.push_SUB("1");
+		machineCode.push_JZERO(machineCode.lineNumber() + 2);
+		machineCode.push_JUMP(machineCode.lineNumber() + 7);
+
+		machineCode.push_LOAD("3");
+		machineCode.push_ADD("4");
+		machineCode.push_STORE("3");
+
+		machineCode.push_LOAD("1");
+		machineCode.push_SUB("2");
+		machineCode.push_STORE("1");
+
+		machineCode.push_LOAD("2");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("2");
+
+		machineCode.push_LOAD("4");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("4");
+
+		machineCode.push_JUMP(machineCode.lineNumber() - 18);
+
+		machineCode.push_LOAD("1");
 	} else {
 		cout << "BARDZO POWAŻNY BŁĄD[6] - expressions" << endl;
 	}
