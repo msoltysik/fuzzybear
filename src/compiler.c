@@ -117,6 +117,11 @@ public:
 		machineCode.push_back(cmd);
 	}
 
+	void push_JUMP(int i) {
+		string cmd = "JUMP " + to_string(i);
+		machineCode.push_back(cmd);
+	}
+
 	// Jeśli a = 0, to k :=i
 	// W przeciwnym p. k := k + 1
 	// time = 1
@@ -125,11 +130,21 @@ public:
 		machineCode.push_back(cmd);
 	}
 
+	void push_JZERO(int i) {
+		string cmd = "JZERO " + to_string(i);
+		machineCode.push_back(cmd);
+	}
+
 	// Jeśli a nieparzyste, to k := i
 	// W przeciwnym przypadku: k := k + 1
 	// time = 1
 	void push_JODD(string i) {
 		string cmd = "JODD " + i;
+		machineCode.push_back(cmd);
+	}
+
+	void push_JODD(int i) {
+		string cmd = "JODD " + to_string(i);
 		machineCode.push_back(cmd);
 	}
 
@@ -436,15 +451,127 @@ void minus_expression(string v1, string v2) {
 	}	
 }
 
+// p[0] | p[1] | p[2] | p[3]
+//  1   |  v1  |  v2  | v1 * v2
 void times_expression(string v1, string v2) {
 	if (is_identifier(v1) && is_number(v2)) {
-	} else if (is_number(v1) && is_identifier(v2)) {
-	} else if (is_identifier(v1) && is_identifier(v2)) {
-	} else if (is_number(v1) && is_number(v2)) {
-		// p[0] | p[1] | p[2] | p[3]
-		//  1   |  v1  |  v2  | wynik
+		Variable *var1 = variableManager.getInitializedVariable(v1);
+		machineCode.push_LOAD(var1->getMemoryAdress());
+		machineCode.push_STORE("1");
+		generate_number(v2);
+		machineCode.push_STORE("2");
+
+		machineCode.push_LOAD("2");
+		machineCode.push_SUB("1");
+		machineCode.push_JZERO(machineCode.lineNumber() + 7);
+		// swap(bo v1 <= v2)
+		machineCode.push_LOAD("1");
+		machineCode.push_STORE("3");
+		machineCode.push_LOAD("2");
+		machineCode.push_STORE("1");
+		machineCode.push_LOAD("3");
+		machineCode.push_STORE("2");
+		
 		machineCode.push_RESET();
 		machineCode.push_STORE("3");
+		machineCode.push_JUMP(machineCode.lineNumber() + 5);
+		machineCode.push_LOAD("3");
+		machineCode.push_ADD("1");
+		machineCode.push_STORE("3");
+		machineCode.push_JUMP(machineCode.lineNumber() + 3);
+		machineCode.push_LOAD("2");
+		machineCode.push_JODD(machineCode.lineNumber() - 5);
+		machineCode.push_LOAD("2");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("2");
+		machineCode.push_LOAD("1");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("1");
+		machineCode.push_JZERO(machineCode.lineNumber() + 2);
+		machineCode.push_JUMP(machineCode.lineNumber() - 9);
+
+		machineCode.push_LOAD("3");
+
+	} else if (is_number(v1) && is_identifier(v2)) {
+		generate_number(v1);
+		machineCode.push_STORE("1");
+		Variable *var2 = variableManager.getInitializedVariable(v2);
+		machineCode.push_LOAD(var2->getMemoryAdress());
+		machineCode.push_STORE("2");
+
+		machineCode.push_LOAD("2");
+		machineCode.push_SUB("1");
+		machineCode.push_JZERO(machineCode.lineNumber() + 7);
+		// swap(bo v1 <= v2)
+		machineCode.push_LOAD("1");
+		machineCode.push_STORE("3");
+		machineCode.push_LOAD("2");
+		machineCode.push_STORE("1");
+		machineCode.push_LOAD("3");
+		machineCode.push_STORE("2");
+		
+		machineCode.push_RESET();
+		machineCode.push_STORE("3");
+		machineCode.push_JUMP(machineCode.lineNumber() + 5);
+		machineCode.push_LOAD("3");
+		machineCode.push_ADD("1");
+		machineCode.push_STORE("3");
+		machineCode.push_JUMP(machineCode.lineNumber() + 3);
+		machineCode.push_LOAD("2");
+		machineCode.push_JODD(machineCode.lineNumber() - 5);
+		machineCode.push_LOAD("2");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("2");
+		machineCode.push_LOAD("1");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("1");
+		machineCode.push_JZERO(machineCode.lineNumber() + 2);
+		machineCode.push_JUMP(machineCode.lineNumber() - 9);
+
+		machineCode.push_LOAD("3");
+
+	} else if (is_identifier(v1) && is_identifier(v2)) {
+		Variable *var1 = variableManager.getInitializedVariable(v1);
+		Variable *var2 = variableManager.getInitializedVariable(v2);
+		machineCode.push_LOAD(var2->getMemoryAdress());
+		machineCode.push_STORE("1");
+		machineCode.push_LOAD(var1->getMemoryAdress());
+		machineCode.push_STORE("2");
+
+		machineCode.push_LOAD("2");
+		machineCode.push_SUB("1");
+		machineCode.push_JZERO(machineCode.lineNumber() + 7);
+		// swap(bo v1 <= v2)
+		machineCode.push_LOAD("1");
+		machineCode.push_STORE("3");
+		machineCode.push_LOAD("2");
+		machineCode.push_STORE("1");
+		machineCode.push_LOAD("3");
+		machineCode.push_STORE("2");
+		
+		machineCode.push_RESET();
+		machineCode.push_STORE("3");
+		machineCode.push_JUMP(machineCode.lineNumber() + 5);
+		machineCode.push_LOAD("3");
+		machineCode.push_ADD("1");
+		machineCode.push_STORE("3");
+		machineCode.push_JUMP(machineCode.lineNumber() + 3);
+		machineCode.push_LOAD("2");
+		machineCode.push_JODD(machineCode.lineNumber() - 5);
+		machineCode.push_LOAD("2");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("2");
+		machineCode.push_LOAD("1");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("1");
+		machineCode.push_JZERO(machineCode.lineNumber() + 2);
+		machineCode.push_JUMP(machineCode.lineNumber() - 9);
+
+		machineCode.push_LOAD("3");
+
+	} else if (is_number(v1) && is_number(v2)) {
+
+		machineCode.push_RESET();
 		machineCode.push_INC();
 		machineCode.push_STORE("0");
 		generate_number(v2);
@@ -452,29 +579,36 @@ void times_expression(string v1, string v2) {
 		generate_number(v1);
 		machineCode.push_STORE("2");
 
-		// jedynka
+		machineCode.push_LOAD("2");
+		machineCode.push_SUB("1");
+		machineCode.push_JZERO(machineCode.lineNumber() + 7);
+		// swap(bo v1 <= v2)
+		machineCode.push_LOAD("1");
+		machineCode.push_STORE("3");
+		machineCode.push_LOAD("2");
+		machineCode.push_STORE("1");
+		machineCode.push_LOAD("3");
+		machineCode.push_STORE("2");
+		
+		machineCode.push_RESET();
+		machineCode.push_STORE("3");
+		machineCode.push_JUMP(machineCode.lineNumber() + 5);
 		machineCode.push_LOAD("3");
 		machineCode.push_ADD("1");
 		machineCode.push_STORE("3");
-		machineCode.push_JUMP(to_string(machineCode.lineNumber() + 3));
-
-		// main
-		machineCode.push_LOAD("1");
-		machineCode.push_JODD(to_string(machineCode.lineNumber() - 5));
-
-		// step
-		machineCode.push_LOAD("1");
-		machineCode.push_SHR("0");
-		machineCode.push_STORE("1");
-		
+		machineCode.push_JUMP(machineCode.lineNumber() + 3);
 		machineCode.push_LOAD("2");
-		machineCode.push_SHL("0");
+		machineCode.push_JODD(machineCode.lineNumber() - 5);
+		machineCode.push_LOAD("2");
+		machineCode.push_SHR("0");
 		machineCode.push_STORE("2");
+		machineCode.push_LOAD("1");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("1");
+		machineCode.push_JZERO(machineCode.lineNumber() + 2);
+		machineCode.push_JUMP(machineCode.lineNumber() - 9);
 
-		machineCode.push_WRITE();
-		machineCode.push_JZERO(to_string(machineCode.lineNumber() + 2));
-		machineCode.push_JUMP(to_string(machineCode.lineNumber() - 7));
-
+		machineCode.push_LOAD("3");
 	} else {
 		cout << "BARDZO POWAŻNY BŁĄD[4] - expressions" << endl;
 	}
@@ -505,7 +639,7 @@ void mod_expression(string v1, string v2) {
 void eq_condition(string v1, string v2) {
 	if (is_identifier(v1) && is_number(v2)) {
 
-	} else if (is_identifier(v1) && is_number(v2)) {
+	} else if (is_number(v1) && is_identifier(v2)) {
 
 	} else if (is_identifier(v1) && is_identifier(v2)) {
 
@@ -518,7 +652,7 @@ void eq_condition(string v1, string v2) {
 
 void diff_condition(string v1, string v2) {
 	if (is_identifier(v1) && is_number(v2)) {
-	} else if (is_identifier(v1) && is_number(v2))
+	} else if (is_number(v1) && is_identifier(v2))
 	{
 	} else if (is_identifier(v1) && is_identifier(v2))
 	{
@@ -531,7 +665,7 @@ void diff_condition(string v1, string v2) {
 
 void le_condition(string v1, string v2) {
 	if (is_identifier(v1) && is_number(v2)) {
-	} else if (is_identifier(v1) && is_number(v2))
+	} else if (is_number(v1) && is_identifier(v2))
 	{
 	} else if (is_identifier(v1) && is_identifier(v2))
 	{
@@ -544,7 +678,7 @@ void le_condition(string v1, string v2) {
 
 void ge_condition(string v1, string v2) {
 	if (is_identifier(v1) && is_number(v2)) {
-	} else if (is_identifier(v1) && is_number(v2))
+	} else if (is_number(v1) && is_identifier(v2))
 	{
 	} else if (is_identifier(v1) && is_identifier(v2))
 	{
@@ -557,7 +691,7 @@ void ge_condition(string v1, string v2) {
 
 void leq_condition(string v1, string v2) {
 	if (is_identifier(v1) && is_number(v2)) {
-	} else if (is_identifier(v1) && is_number(v2))
+	} else if (is_number(v1) && is_identifier(v2))
 	{
 	} else if (is_identifier(v1) && is_identifier(v2))
 	{
@@ -570,7 +704,7 @@ void leq_condition(string v1, string v2) {
 
 void geq_condition(string v1, string v2) {
 	if (is_identifier(v1) && is_number(v2)) {
-	} else if (is_identifier(v1) && is_number(v2))
+	} else if (is_number(v1) && is_identifier(v2))
 	{
 	} else if (is_identifier(v1) && is_identifier(v2))
 	{

@@ -1,6 +1,9 @@
 DECLARE
-  a
+  a b c
 IN
-	a ASSIGN 3 TIMES 3;
+	b ASSIGN 1;
+	c ASSIGN 5;
+	a ASSIGN 25 TIMES c;
+	a ASSIGN 25 TIMES a;
 	PUT a;
 END
