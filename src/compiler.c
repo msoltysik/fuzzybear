@@ -200,8 +200,8 @@ public:
 		this->initialized = true;
 	}
 
-	void setMemoryAdress(unsigned int memory_adress) {
-		this->memory_adress = memory_adress;
+	void setMemoryAdress(unsigned int memory_adres) {
+		this->memory_adress = memory_adres;
 	}
 
 	string getMemoryAdress() {
@@ -339,15 +339,16 @@ void generate_cc() {
 
 void define_variable(string variableName) {
 	Variable* temp = new Variable(variableName);
-	temp->setMemoryAdress(++memory_pointer);
+	int t = memory_pointer;
+	temp->setMemoryAdress(memory_pointer+1);
 	variableManager.addVariable(temp);
+	memory_pointer += 1;
 }
 
 void get_variable(string variableName) {
-	int memory_adress = memory_pointer++;
+	int memory_adress = variableManager.getVariable(variableName)->memory_adress;
 	variableManager.getVariable(variableName)->initialized = true;
-	variableManager.getVariable(variableName)->memory_adress = memory_adress;
-
+	
 	machineCode.push_READ();
 	machineCode.push_STORE(to_string(memory_adress));
 }

@@ -1,9 +1,0 @@
-DECLARE
-  i
-IN
-	i ASSIGN 10;
-	WHILE i GE 0 DO
-		PUT i;
-		i ASSIGN i MINUS 1;
-	ENDWHILE
-END

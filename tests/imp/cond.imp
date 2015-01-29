@@ -1,10 +1,11 @@
 (* cond.imp - instrukcje warunkowe *)
 DECLARE
-    a b
+    a b c
 IN
     GET a;
     a ASSIGN 5 PLUS a;
 	b ASSIGN a MINUS 2047;
+    c ASSIGN b;
     IF a LE b THEN
 	ELSE 
 	    PUT a;
