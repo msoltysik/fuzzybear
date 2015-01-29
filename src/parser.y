@@ -53,8 +53,8 @@ commands command {
 command:
 identifier ASSIGN expression SEM {
 	assign_variable($<identifier>1);
-}|IF condition THEN commands ENDIF {
-
+}|IF condition THEN commands ENDIF  {
+	_if_handler();
 }|IF condition THEN commands ELSE commands ENDIF {
 
 }|WHILE condition DO commands ENDWHILE {
@@ -88,9 +88,9 @@ value EQ value {
 }|value LE value {
 	le_condition($<value>1, $<value>3);
 }|value GE value {
-	ge_condition($<value>1, $<value>3);
+	le_condition($<value>3, $<value>1);
 }|value LEQ value {
-	leq_condition($<value>1, $<value>3);
+	geq_condition($<value>3, $<value>1);
 }|value GEQ value {
 	geq_condition($<value>1, $<value>3);
 };

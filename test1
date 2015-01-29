@@ -1,8 +1,8 @@
 DECLARE
   a b c
 IN
-	b ASSIGN 10;
-	c ASSIGN 20;
-	a ASSIGN b MOD 12;
-	PUT a;
+	a ASSIGN 1337;
+	IF 2 GEQ 3 THEN
+		PUT a;
+	ENDIF
 END
