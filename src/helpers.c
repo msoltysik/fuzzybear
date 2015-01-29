@@ -93,5 +93,8 @@ string DecToBin(string num) {
 		}
 		num = divByTwo(num);
 	}
+	if (stack == "") {
+		return "0";
+	}
 	return stack;
 }

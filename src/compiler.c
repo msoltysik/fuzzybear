@@ -319,7 +319,7 @@ public:
 	}
 };
 
-
+vector<int> loopManager;
 vector<int> jumpManagerF;
 vector<int> jumpManagerT;
 
@@ -368,15 +368,14 @@ void generate_number(string v1) {
 	string number = DecToBin(v1);
 	int size = number.length();
 	machineCode.push_RESET();
-	bool stored = false;
+	machineCode.push_INC();
+	machineCode.push_STORE("0");
+	machineCode.push_RESET();
+
 
 	for (int i = 0; i < size; ++i) {
 		if (number[i] == '1')
 			machineCode.push_INC();
-		if (!stored) {
-			machineCode.push_STORE("0");
-			stored = true;
-		}
 		if (i < size - 1)
 			machineCode.push_SHL("0");
 	}
@@ -1057,7 +1056,6 @@ void _if_handler() {
 	out << machineCode.machineCode[jumpManagerF.back()] << machineCode.lineNumber();
 	machineCode.machineCode[jumpManagerF.back()] = out.str();
 	jumpManagerF.pop_back();
-
 }
 
 // Conditions
@@ -1141,7 +1139,7 @@ void diff_condition(string v1, string v2) {
 		machineCode.push_JUMP(machineCode.lineNumber() + 3);
 		machineCode.push_LOAD("1");
 		machineCode.push_SUB("2");
-		machineCode.push_JZERO(machineCode.lineNumber());
+		machineCode.push_JZERO("");
 		jumpManagerF.push_back(machineCode.lineNumber() - 1);
 	} else if (is_number(v1) && is_identifier(v2)) {
 		generate_number(v1);
@@ -1155,7 +1153,7 @@ void diff_condition(string v1, string v2) {
 		machineCode.push_JUMP(machineCode.lineNumber() + 3);
 		machineCode.push_LOAD("1");
 		machineCode.push_SUB("2");
-		machineCode.push_JZERO(machineCode.lineNumber());
+		machineCode.push_JZERO("");
 		jumpManagerF.push_back(machineCode.lineNumber() - 1);
 	} else if (is_identifier(v1) && is_identifier(v2)) {
 		Variable *var1 = variableManager.getInitializedVariable(v1);
@@ -1171,7 +1169,7 @@ void diff_condition(string v1, string v2) {
 		machineCode.push_JUMP(machineCode.lineNumber() + 3);
 		machineCode.push_LOAD("1");
 		machineCode.push_SUB("2");
-		machineCode.push_JZERO(machineCode.lineNumber());
+		machineCode.push_JZERO("");
 		jumpManagerF.push_back(machineCode.lineNumber() - 1);
 	} else if (is_number(v1) && is_number(v2)) {
 		generate_number(v1);
@@ -1184,7 +1182,7 @@ void diff_condition(string v1, string v2) {
 		machineCode.push_JUMP(machineCode.lineNumber() + 3);
 		machineCode.push_LOAD("1");
 		machineCode.push_SUB("2");
-		machineCode.push_JZERO(machineCode.lineNumber());
+		machineCode.push_JZERO("");
 		jumpManagerF.push_back(machineCode.lineNumber() - 1);
 	} else {
 		cout << "BARDZO POWAŻNY BŁĄD[2] - conditions" << endl;
@@ -1219,7 +1217,7 @@ void le_condition(string v1, string v2) {
 
 		machineCode.push_SUB("1");
 		machineCode.push_JZERO("");
-		jumpManagerF.push_back(machineCode.lineNumber()-1);
+		jumpManagerF.push_back(machineCode.lineNumber() - 1);
 	} else if (is_number(v1) && is_number(v2)) {
 		generate_number(v1);
 		machineCode.push_STORE("1");
@@ -1228,7 +1226,7 @@ void le_condition(string v1, string v2) {
 
 		machineCode.push_SUB("1");
 		machineCode.push_JZERO("");
-		jumpManagerF.push_back(machineCode.lineNumber()-1);
+		jumpManagerF.push_back(machineCode.lineNumber() - 1);
 	} else {
 		cout << "BARDZO POWAŻNY BŁĄD[3] - conditions" << endl;
 	}
@@ -1240,7 +1238,7 @@ void geq_condition(string v1, string v2) {
 		Variable *var1 = variableManager.getInitializedVariable(v1);
 		machineCode.push_LOAD(var1->getMemoryAdress());
 		machineCode.push_STORE("1");
-		
+
 		generate_number(v2);
 		machineCode.push_STORE("2");
 
@@ -1285,4 +1283,32 @@ void geq_condition(string v1, string v2) {
 	} else {
 		cout << "BARDZO POWAŻNY BŁĄD[6] - conditions" << endl;
 	}
+}
+
+void end_of_ELSEIF() {
+	jumpManagerT.push_back(machineCode.lineNumber());
+	machineCode.push_JUMP("");
+}
+
+void _else_handler() {
+	stringstream out;
+	out << machineCode.machineCode[jumpManagerT.back()] << machineCode.lineNumber();
+	machineCode.machineCode[jumpManagerT.back()] = out.str();
+	jumpManagerT.pop_back();
+}
+
+
+void _start_loop() {
+	loopManager.push_back(machineCode.lineNumber());
+}
+
+void _end_loop() {
+	machineCode.push_JUMP(loopManager.back());
+	loopManager.pop_back();
+	stringstream out;
+	out << machineCode.machineCode[jumpManagerF.back()] << machineCode.lineNumber();
+	machineCode.machineCode[jumpManagerF.back()] = out.str();
+	jumpManagerF.pop_back();
+
+
 }

@@ -1,8 +1,9 @@
 DECLARE
-  a b c
+  i
 IN
-	a ASSIGN 1337;
-	IF 2 GEQ 3 THEN
-		PUT a;
-	ENDIF
+	i ASSIGN 10;
+	WHILE i GE 0 DO
+		PUT i;
+		i ASSIGN i MINUS 1;
+	ENDWHILE
 END

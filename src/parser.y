@@ -55,10 +55,17 @@ identifier ASSIGN expression SEM {
 	assign_variable($<identifier>1);
 }|IF condition THEN commands ENDIF  {
 	_if_handler();
-}|IF condition THEN commands ELSE commands ENDIF {
+}|IF condition THEN commands {
+	end_of_ELSEIF();
+} ELSE {
+	_if_handler();
+} commands ENDIF {
+	_else_handler();
 
-}|WHILE condition DO commands ENDWHILE {
-
+}|WHILE {
+	_start_loop();
+} condition DO commands ENDWHILE {
+	_end_loop();
 }|GET identifier SEM {
 	get_variable($<identifier>2);
 }|PUT value SEM {
