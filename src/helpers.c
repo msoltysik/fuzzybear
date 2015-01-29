@@ -27,7 +27,12 @@ string DecToBin(int number) {
 	}
 }
 
-string BinToDec(string number) {
+string DecToBin(string number) {
+	int num = stoi(number);
+	return DecToBin(num);
+}
+
+/*string BinToDec(string number) {
 	int result = 0;
 	int pow = 1;
 
@@ -40,8 +45,56 @@ string BinToDec(string number) {
 	return ss.str();
 }
 
-
-string DecToBin(string number) {
-	int num = stoi(number);
-	return DecToBin(num);
+bool isOdd(char c) {
+	int number = (int)c - (int)48;
+	return (number % 2);
 }
+
+bool isOdd(string s) {
+	char tmp = s.back();
+	int number = (int)tmp - (int)48;
+	return (number % 2);
+}
+
+string divByTwo(string s) {
+	string new_s = "";
+	int next_add = 0;
+
+	for (char& ch : s) {
+		int add = next_add;
+		if (isOdd(ch)) {
+			next_add = 5;
+		} else {
+			next_add = 0;
+		}
+
+		char new_ch = (char)((ch - '0') / (2 + add + '0'));
+		new_s.push_back(new_ch);
+		cout << new_s << endl;
+	}
+
+	if(new_s != "0") {
+ 		if(new_s[0] == '0') {
+				string tmp = new_s.substr(1, new_s.size()-1);
+				new_s = tmp;
+ 		} 
+ 	}
+
+	return new_s;
+}
+
+string DecToBin(string num) {
+	string stack = "";
+
+	while (num != "0") {
+		if (isOdd(num))
+		{
+			stack = "1" + stack;
+		} else {
+			stack = "0" + stack;
+		}
+		num = divByTwo(num);
+	}
+	return stack;
+}
+*/

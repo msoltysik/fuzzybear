@@ -9,7 +9,7 @@ extern int yylineno;
 // Stąd zaczynamy zapisywać zmienne
 // Pierwsza zmienna jest w p[10]
 int memory_pointer = 9; 
-bool dbg = true;
+bool dbg = false;
 
 class ErrorFactory {
 public:
@@ -121,7 +121,7 @@ public:
 	// W przeciwnym p. k := k + 1
 	// time = 1
 	void push_JZERO(string i) {
-		string cmd = "SHL " + i;
+		string cmd = "JZERO " + i;
 		machineCode.push_back(cmd);
 	}
 
@@ -129,7 +129,7 @@ public:
 	// W przeciwnym przypadku: k := k + 1
 	// time = 1
 	void push_JODD(string i) {
-		string cmd = "SHL " + i;
+		string cmd = "JODD " + i;
 		machineCode.push_back(cmd);
 	}
 
@@ -151,6 +151,10 @@ public:
 				cout << machineCode[i] << endl;
 			}
 		}
+	}
+
+	int lineNumber() {
+		return machineCode.size();
 	}
 
 	void getMachineCode() {
@@ -185,8 +189,8 @@ public:
 		this->memory_adress = memory_adress;
 	}
 
-	unsigned int getMemoryAdress() {
-		return this->memory_adress;
+	string getMemoryAdress() {
+		return to_string(this->memory_adress);
 	}
 
 };
@@ -329,12 +333,12 @@ void get_variable(string variableName) {
 
 	machineCode.push_READ();
 	machineCode.push_STORE(to_string(memory_adress));
-
 }
 
 void assign_variable(string v1) {
 	Variable *var =	variableManager.getVariable(v1);
-	machineCode.push_LOAD(to_string(var->memory_adress));
+	machineCode.push_STORE(to_string(var->memory_adress));
+	var->initialized = true;
 }
 
 void put_variable(string v1) {
@@ -343,27 +347,30 @@ void put_variable(string v1) {
 	machineCode.push_WRITE();
 }
 
+void generate_number(string v1) {
+	string number = DecToBin(v1);
+	int size = number.length();
+	machineCode.push_RESET();
+	bool stored = false;
+
+	for (int i = 0; i < size; ++i) {
+		if (number[i] == '1')
+			machineCode.push_INC();
+		if (!stored) {
+			machineCode.push_STORE("0");
+			stored = true;
+		}
+		if (i < size - 1)
+			machineCode.push_SHL("0");
+	}
+}
 
 void _expression(string v1) {
 	if (is_identifier(v1)) {
-		cout << variableManager.getInitializedVariable(v1)->getMemoryAdress() << endl;
-		cout << "lol" << endl;
-
+		string memory_adress = variableManager.getInitializedVariable(v1)->getMemoryAdress();
+		machineCode.push_LOAD(memory_adress);
 	} else if (is_number(v1)) {
-		string x = DecToBin(v1);
-		machineCode.push_RESET();		
-
-		for(char& c : x) {
-			if (c == '1') {
-				machineCode.push_INC();
-				machineCode.push_STORE("0");
-				machineCode.push_SHL("0");
-
-			}
-
-			cout << c << endl;
-		}
-
+		generate_number(v1);
 	} else {
 		cout << "BARDZO POWAŻNY BŁĄD[1] - expressions" << endl;
 	}
@@ -371,12 +378,29 @@ void _expression(string v1) {
 
 void plus_expression(string v1, string v2) {
 	if (is_identifier(v1) && is_number(v2)) {
-	} else if (is_identifier(v1) && is_number(v2))
-	{
-	} else if (is_identifier(v1) && is_identifier(v2))
-	{
-	} else if (is_number(v1) && is_number(v2))
-	{
+		Variable *var1 = variableManager.getInitializedVariable(v1);
+		machineCode.push_LOAD(var1->getMemoryAdress());
+		machineCode.push_STORE("1");
+		generate_number(v2);
+		machineCode.push_ADD("1");
+	} else if (is_number(v1) && is_identifier(v2)) {
+		generate_number(v1);
+		machineCode.push_STORE("1");
+		Variable *var2 = variableManager.getInitializedVariable(v2);
+		machineCode.push_LOAD(var2->getMemoryAdress());
+		machineCode.push_ADD("1");
+	} else if (is_identifier(v1) && is_identifier(v2)) {
+		Variable *var1 = variableManager.getInitializedVariable(v1);
+		Variable *var2 = variableManager.getInitializedVariable(v2);
+		machineCode.push_LOAD(var1->getMemoryAdress());
+		machineCode.push_STORE("1");
+		machineCode.push_LOAD(var2->getMemoryAdress());
+		machineCode.push_ADD("1");
+	} else if (is_number(v1) && is_number(v2)) {
+		generate_number(v1);
+		machineCode.push_STORE("1");
+		generate_number(v2);
+		machineCode.push_ADD("1");
 	} else {
 		cout << "BARDZO POWAŻNY BŁĄD[2] - expressions" << endl;
 	}
@@ -384,12 +408,29 @@ void plus_expression(string v1, string v2) {
 
 void minus_expression(string v1, string v2) {
 	if (is_identifier(v1) && is_number(v2)) {
-	} else if (is_identifier(v1) && is_number(v2))
-	{
-	} else if (is_identifier(v1) && is_identifier(v2))
-	{
-	} else if (is_number(v1) && is_number(v2))
-	{
+		generate_number(v2);
+		machineCode.push_STORE("1");
+		Variable *var1 = variableManager.getInitializedVariable(v1);
+		machineCode.push_LOAD(var1->getMemoryAdress());
+		machineCode.push_SUB("1");
+	} else if (is_number(v1) && is_identifier(v2)) {
+		Variable *var2 = variableManager.getInitializedVariable(v2);
+		machineCode.push_LOAD(var2->getMemoryAdress());
+		machineCode.push_STORE("1");
+		generate_number(v1);
+		machineCode.push_SUB("1");
+	} else if (is_identifier(v1) && is_identifier(v2)) {
+		Variable *var2 = variableManager.getInitializedVariable(v2);
+		Variable *var1 = variableManager.getInitializedVariable(v1);
+		machineCode.push_LOAD(var2->getMemoryAdress());
+		machineCode.push_STORE("1");
+		machineCode.push_LOAD(var1->getMemoryAdress());
+		machineCode.push_SUB("1");
+	} else if (is_number(v1) && is_number(v2)) {
+		generate_number(v2);
+		machineCode.push_STORE("1");
+		generate_number(v1);
+		machineCode.push_SUB("1");
 	} else {
 		cout << "BARDZO POWAŻNY BŁĄD[3] - expressions" << endl;
 	}	
@@ -397,40 +438,65 @@ void minus_expression(string v1, string v2) {
 
 void times_expression(string v1, string v2) {
 	if (is_identifier(v1) && is_number(v2)) {
-	} else if (is_identifier(v1) && is_number(v2))
-	{
-	} else if (is_identifier(v1) && is_identifier(v2))
-	{
-	} else if (is_number(v1) && is_number(v2))
-	{
+	} else if (is_number(v1) && is_identifier(v2)) {
+	} else if (is_identifier(v1) && is_identifier(v2)) {
+	} else if (is_number(v1) && is_number(v2)) {
+		// p[0] | p[1] | p[2] | p[3]
+		//  1   |  v1  |  v2  | wynik
+		machineCode.push_RESET();
+		machineCode.push_STORE("3");
+		machineCode.push_INC();
+		machineCode.push_STORE("0");
+		generate_number(v2);
+		machineCode.push_STORE("1");
+		generate_number(v1);
+		machineCode.push_STORE("2");
+
+		// jedynka
+		machineCode.push_LOAD("3");
+		machineCode.push_ADD("1");
+		machineCode.push_STORE("3");
+		machineCode.push_JUMP(to_string(machineCode.lineNumber() + 3));
+
+		// main
+		machineCode.push_LOAD("1");
+		machineCode.push_JODD(to_string(machineCode.lineNumber() - 5));
+
+		// step
+		machineCode.push_LOAD("1");
+		machineCode.push_SHR("0");
+		machineCode.push_STORE("1");
+		
+		machineCode.push_LOAD("2");
+		machineCode.push_SHL("0");
+		machineCode.push_STORE("2");
+
+		machineCode.push_WRITE();
+		machineCode.push_JZERO(to_string(machineCode.lineNumber() + 2));
+		machineCode.push_JUMP(to_string(machineCode.lineNumber() - 7));
+
 	} else {
 		cout << "BARDZO POWAŻNY BŁĄD[4] - expressions" << endl;
-	}	
+	}
 }
 
 void div_expression(string v1, string v2) {
 	if (is_identifier(v1) && is_number(v2)) {
-	} else if (is_identifier(v1) && is_number(v2))
-	{
-	} else if (is_identifier(v1) && is_identifier(v2))
-	{
-	} else if (is_number(v1) && is_number(v2))
-	{
+	} else if (is_number(v1) && is_identifier(v2)) {
+	} else if (is_identifier(v1) && is_identifier(v2)) {
+	} else if (is_number(v1) && is_number(v2)) {
 	} else {
 		cout << "BARDZO POWAŻNY BŁĄD[5] - expressions" << endl;
-	}	
+	}
 }
 
 void mod_expression(string v1, string v2) {
 	if (is_identifier(v1) && is_number(v2)) {
-	} else if (is_identifier(v1) && is_number(v2))
-	{
-	} else if (is_identifier(v1) && is_identifier(v2))
-	{
-	} else if (is_number(v1) && is_number(v2))
-	{
+	} else if (is_number(v1) && is_identifier(v2)) {
+	} else if (is_identifier(v1) && is_identifier(v2)) {
+	} else if (is_number(v1) && is_number(v2)) {
 	} else {
-		cout << "BARDZO POWAŻNY BŁĄD[1] - expressions" << endl;
+		cout << "BARDZO POWAŻNY BŁĄD[6] - expressions" << endl;
 	}
 }
 

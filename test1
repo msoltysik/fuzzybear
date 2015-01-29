@@ -1,0 +1,6 @@
+DECLARE
+  a
+IN
+	a ASSIGN 3 TIMES 3;
+	PUT a;
+END
